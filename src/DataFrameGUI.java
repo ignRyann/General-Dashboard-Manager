@@ -281,10 +281,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                     searchBarTextField.setText("");
                     updateSearchColumnComboBoxModel();
                 } else {
-                    JOptionPane.showMessageDialog(this, "The selected file is not supported. Please choose a .csv file");
+                    JOptionPane.showMessageDialog(this, "The selected file is not supported. Please choose a .csv file.");
                 }
             }catch (StringIndexOutOfBoundsException e){
-                JOptionPane.showMessageDialog(this, "The selected file does not exit. Please choose a valid file");
+                JOptionPane.showMessageDialog(this, "The selected file does not exit. Please choose a valid file.");
             }
         }
 
