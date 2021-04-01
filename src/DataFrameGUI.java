@@ -346,7 +346,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             loadFile();
         }
         if (e.getSource() == saveDataFrameItem){
-            System.out.println("Saved the data to a .csv file");
+            currentData.saveToJSONFile("Test");
+            JOptionPane.showMessageDialog(this, "The data has been saved to a .json file");
         }
 
         // Action set for when the selected data in searchColumnComboBox has changed
