@@ -104,4 +104,8 @@ public class DataFrame{
         return rowValues.toArray(new String[0]);
     }
 
+    public Boolean isEmpty(){
+        return Columns.size() == 0;
+    }
+
 }
