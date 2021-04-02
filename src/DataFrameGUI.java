@@ -48,6 +48,11 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private PlaceholderTextField searchBarTextField;
     private JLabel searchBarMatchesLabel;
 
+    // Variables for saving the data to a .json file
+    private String fileName;
+    private String statusMessage;
+    private JCheckBox overwriteFileCheckBox;
+
     // Main body for the DataFrameGUI
     public DataFrameGUI(){
         createGUI();
@@ -290,6 +295,29 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     }
 
+    private void saveFile(){
+        fileName = "Test";
+        statusMessage = currentData.saveToJSONFile(fileName);
+
+        if (statusMessage.equals("The file " + fileName + ".json already exists")){
+            overwriteFileCheckBox = new JCheckBox("Overwrite " + fileName + ".json");
+            Object[] msgContent = {statusMessage, overwriteFileCheckBox};
+            JOptionPane.showConfirmDialog(this,  msgContent,  null, JOptionPane.YES_NO_OPTION);
+
+            if (overwriteFileCheckBox.isSelected()){
+                File myObj = new File("DataSet/" + fileName + ".json");
+                if (myObj.delete()) {
+                    saveFile();
+                } else {
+                    JOptionPane.showMessageDialog(this, "Unable to delete the file", null, JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+
+        }else{
+            JOptionPane.showMessageDialog(this, statusMessage, null, JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
     // Updates the dataSelectionPanel with the Column Names of the DataFrame loaded in
     private void updateDataSelectionPanel(){
         // Removes any previous data and creates a new layout
@@ -346,8 +374,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             loadFile();
         }
         if (e.getSource() == saveDataFrameItem){
-            currentData.saveToJSONFile("Test");
-            JOptionPane.showMessageDialog(this, "The data has been saved to a .json file");
+            saveFile();
         }
 
         // Action set for when the selected data in searchColumnComboBox has changed
