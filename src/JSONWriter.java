@@ -1,12 +1,26 @@
-// https://gyazo.com/30e942f2d4a056fd56e9c1f10cf079c1
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class JSONWriter {
 
     private String message;
+
+    public boolean fileNameValid(String fileName) {
+        if (!fileName.equals("")) {
+            Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
+            Matcher matcher = pattern.matcher(fileName);
+            if(matcher.find()) {
+                return false;
+            }else {
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
 
     public void createFile(String fileName){
         try {
@@ -59,9 +73,13 @@ public class JSONWriter {
     }
 
     public String createJSONFile(DataFrame dataFrame, String fileName){
-        createFile(fileName);
-        if (new File("DataSet/" + fileName + ".json").isFile()){
-            addDataToJSONFile(dataFrame, fileName);
+        if (fileNameValid(fileName)) {
+            createFile(fileName);
+            if (new File("DataSet/" + fileName + ".json").isFile()) {
+                addDataToJSONFile(dataFrame, fileName);
+            }
+        }else{
+            message = "The file name must only contains letters and numbers";
         }
 
         return message;
