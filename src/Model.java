@@ -63,4 +63,8 @@ public class Model {
         return dataFrameTableModel;
     }
 
+    public void saveToJSONFile(String fileName){
+        new JSONWriter().createJSONFile(currentDataFrame, fileName);
+    }
+
 }
