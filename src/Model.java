@@ -63,8 +63,12 @@ public class Model {
         return dataFrameTableModel;
     }
 
-    public void saveToJSONFile(String fileName){
-        new JSONWriter().createJSONFile(currentDataFrame, fileName);
+    public String saveToJSONFile(String fileName){
+        if (currentDataFrame.isEmpty()) {
+            return "The DataFrame is currently empty";
+        } else {
+            return new JSONWriter().createJSONFile(currentDataFrame, fileName);
+        }
     }
 
 }
