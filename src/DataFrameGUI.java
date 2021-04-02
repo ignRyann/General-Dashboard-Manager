@@ -49,6 +49,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private JLabel searchBarMatchesLabel;
 
     // Variables for saving the data to a .json file
+    private JTextField fileNameTextField;
     private String fileName;
     private String statusMessage;
     private JCheckBox overwriteFileCheckBox;
@@ -295,8 +296,16 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     }
 
+    private void getFileName(){
+        fileNameTextField = new JTextField();
+        Object[] msgContent = {"Please enter the name of the file you wish to save the file as: ", fileNameTextField};
+        JOptionPane.showConfirmDialog(this,  msgContent,  "Save File", JOptionPane.YES_NO_OPTION);
+
+        fileName = fileNameTextField.getText();
+    }
+
     private void saveFile(){
-        fileName = "Test";
+        getFileName();
         statusMessage = currentData.saveToJSONFile(fileName);
 
         if (statusMessage.equals("The file " + fileName + ".json already exists")){
@@ -307,7 +316,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             if (overwriteFileCheckBox.isSelected()){
                 File myObj = new File("DataSet/" + fileName + ".json");
                 if (myObj.delete()) {
-                    saveFile();
+                    JOptionPane.showMessageDialog(this, currentData.saveToJSONFile(fileName), null, JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     JOptionPane.showMessageDialog(this, "Unable to delete the file", null, JOptionPane.INFORMATION_MESSAGE);
                 }
