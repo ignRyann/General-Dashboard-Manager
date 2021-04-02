@@ -6,6 +6,21 @@ import java.io.IOException;
 
 public class JSONWriter {
 
+    private String message;
+
+    public void createFile(String fileName){
+        try {
+            File myObj = new File("DataSet/" + fileName + ".json");
+            if (myObj.createNewFile()) {
+                message = "The DataFrame has been saved to " + fileName + ".json";
+            } else {
+                message = "The file " + fileName + ".json already exists";
+            }
+        } catch (IOException e) {
+            message = "An error has occurred whilst saving the current DataFrame to " + fileName + ".json";
+            e.printStackTrace();
+        }
+    }
 
     public void addDataToJSONFile(DataFrame dataFrame, String fileName){
         try {
@@ -38,30 +53,18 @@ public class JSONWriter {
             myWriter.write("\n}");
 
             myWriter.close();
-            System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
-            System.out.println("An error occurred.");
             e.printStackTrace();
         }
     }
 
-    public void createFile(String fileName){
-        try {
-            File myObj = new File("DataSet/" + fileName + ".json");
-            if (myObj.createNewFile()) {
-                System.out.println("File created: " + myObj.getName());
-            } else {
-                System.out.println("File already exists.");
-            }
-        } catch (IOException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
-        }
-    }
-
-    public void createJSONFile(DataFrame dataFrame, String fileName){
+    public String createJSONFile(DataFrame dataFrame, String fileName){
         createFile(fileName);
-        addDataToJSONFile(dataFrame, fileName);
+        if (new File("DataSet/" + fileName + ".json").isFile()){
+            addDataToJSONFile(dataFrame, fileName);
+        }
+
+        return message;
     }
 
 }
