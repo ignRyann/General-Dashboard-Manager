@@ -47,7 +47,7 @@ public class JSONWriter {
                 for (int i = 0; i < dataFrame.getRowCount(); i++){
 
                     if (i != dataFrame.getRowCount()-1) {
-                        myWriter.write("\"" + dataFrame.getColumnValues(columnName)[i] + "\", ");
+                        myWriter.write("\"" + dataFrame.getColumnValues(columnName)[i] + "\",");
                     }else{
                         myWriter.write("\"" + dataFrame.getColumnValues(columnName)[i] + "\"");
                     }
