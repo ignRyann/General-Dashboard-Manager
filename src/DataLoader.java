@@ -1,6 +1,8 @@
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DataLoader{
 
@@ -8,6 +10,7 @@ public class DataLoader{
 
     // Opens a CSV File and appends each entry in an ArrayList made up of String Arrays
     private ArrayList<String[]> openCsvFile(String filePath){
+        ArrayList<String[]> csvDataCorrectFormat = new ArrayList<>();
         ArrayList<String[]> csvData = new ArrayList<>();
 
         try{
@@ -15,7 +18,6 @@ public class DataLoader{
             String row;
             while (((row = csvReader.readLine()) != null)){
                 String[] data = row.split(",");
-                System.out.println(Arrays.toString(data));
                 csvData.add(data);
             }
             csvReader.close();
@@ -27,14 +29,6 @@ public class DataLoader{
             e.printStackTrace();
         }
 
-
-
-        return csvData;
-    }
-
-    // Takes in an ArrayList of String[] in the format of {[columnNames], [Row 1 Data], [Row 2 Data]..}
-    // Loads the data into the dataframe
-    private void createDataFrameFromCsvData(ArrayList<String[]> csvData){
         for ( int counter = 0; counter != csvData.get(0).length; counter++){
             ArrayList<String> columnData = new ArrayList<>();
             for ( String[] record : csvData ){
@@ -46,11 +40,11 @@ public class DataLoader{
                 }
 
             }
-            String columnName = columnData.get(0);
-            columnData.remove(0);
-            loadedDataFrame.addColumn(columnName, columnData);
+            csvDataCorrectFormat.add(columnData.toArray(new String[0]));
         }
 
+
+        return csvDataCorrectFormat;
     }
 
     // Opens a JSON File and stores the data to an ArrayList of String Arrays
@@ -78,13 +72,12 @@ public class DataLoader{
 
     // Takes in an ArrayList of String[] in the format of {[columnName, columnData..], [columnName, columnData..]..}
     // Loads the data into the dataframe
-    private void createDataFrameFromJSONData(ArrayList<String[]> jsonData){
+    private void createDataFrame(ArrayList<String[]> jsonData){
         for ( String[] columnData : jsonData ){
-            String columnName = columnData[0];
-            loadedDataFrame.addColumn(columnName);
+            loadedDataFrame.addColumn(columnData[0]);
 
             for (int i = 1; i < columnData.length; i++){
-                loadedDataFrame.addValue(columnName, columnData[i]);
+                loadedDataFrame.addValue(columnData[0], columnData[i]);
             }
 
         }
@@ -92,13 +85,13 @@ public class DataLoader{
 
     // Main body of the code; Returns the loaded data frame given the file path
     public DataFrame loadDataFrame(String filePath){
+        ArrayList<String[]> data;
         if (filePath.endsWith(".csv")){
-            ArrayList<String[]> csvData = openCsvFile(filePath);
-            createDataFrameFromCsvData(csvData);
+            data = openCsvFile(filePath);
         }else{
-            ArrayList<String[]> jsonData = openJSONFile(filePath);
-            createDataFrameFromJSONData(jsonData);
+            data = openJSONFile(filePath);
         }
+        createDataFrame(data);
         return loadedDataFrame;
     }
 
