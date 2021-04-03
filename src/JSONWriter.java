@@ -13,11 +13,7 @@ public class JSONWriter {
         if (!fileName.equals("")) {
             Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
             Matcher matcher = pattern.matcher(fileName);
-            if(matcher.find()) {
-                return false;
-            }else {
-                return true;
-            }
+            return !matcher.find();
         }else{
             return false;
         }
