@@ -174,7 +174,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         // Commands for better readability of the data
         dataFrameTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         dataFrameTable.setCellSelectionEnabled(true);
-        dataFrameTable.getTableHeader().setReorderingAllowed(false);
+//        dataFrameTable.getTableHeader().setReorderingAllowed(false);
         dataFrameTable.getColumnModel().setColumnMargin(20);
         dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
 
@@ -302,6 +302,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     }
 
+    // Retrieves the file name the user wishes to save the data as
     private void getFileName(){
         fileNameTextField = new JTextField();
         Object[] msgContent = {"Please enter the name of the file you wish to save the file as: ", fileNameTextField};
@@ -310,10 +311,13 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         fileName = fileNameTextField.getText();
     }
 
+    // Main body to save the data as a .json file
     private void saveFile(){
         getFileName();
+        // Saves the status message to display later
         statusMessage = currentData.saveToJSONFile(fileName);
 
+        // If the filename already exists, give the user the option to replace it
         if (statusMessage.equals("The file " + fileName + ".json already exists")){
             overwriteFileCheckBox = new JCheckBox("Overwrite " + fileName + ".json");
             Object[] msgContent = {statusMessage, overwriteFileCheckBox};
@@ -329,6 +333,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             }
 
         }else{
+            // Display the status message
             JOptionPane.showMessageDialog(this, statusMessage, null, JOptionPane.INFORMATION_MESSAGE);
         }
     }
