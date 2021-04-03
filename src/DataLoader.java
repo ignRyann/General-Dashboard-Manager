@@ -77,8 +77,8 @@ public class DataLoader{
 
     // Takes in an ArrayList of String[] in the format of {[columnName, columnData..], [columnName, columnData..]..}
     // Loads the data into the dataframe
-    private void createDataFrame(ArrayList<ArrayList<String>> jsonData){
-        for ( ArrayList<String> columnData : jsonData ){
+    private void createDataFrame(ArrayList<ArrayList<String>> fileData){
+        for ( ArrayList<String> columnData : fileData ){
             String columnName = columnData.get(0);
             columnData.remove(0);
             loadedDataFrame.addColumn(columnName, columnData);
