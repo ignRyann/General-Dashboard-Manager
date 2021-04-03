@@ -11,14 +11,6 @@ public class DataFrame{
         Columns.add(newColumn);
     }
 
-    // Adds an empty column to the DataFrame given just a name
-    public void addColumn(String name){
-        ArrayList<String> emptyRowValues = new ArrayList<>();
-        Column newColumn = new Column(name, emptyRowValues);
-        Columns.add(newColumn);
-    }
-
-
     // Returns a String containing a list of the column names
     public String[] getColumnNames(){
         ArrayList<String> columnNames = new ArrayList<>();
@@ -91,17 +83,6 @@ public class DataFrame{
         }
 
         return columnValues.toArray(new String[0]);
-    }
-
-    // Gets the values at index row from every column
-    public String[] getRowValues(int row){
-        ArrayList<String> rowValues = new ArrayList<>();
-
-        for (Column col : Columns){
-            rowValues.add(col.getRowValue(row));
-        }
-
-        return rowValues.toArray(new String[0]);
     }
 
     public Boolean isEmpty(){
