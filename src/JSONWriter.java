@@ -8,6 +8,7 @@ public class JSONWriter {
 
     private String message;
 
+    // Makes sure that the file name is valid
     public boolean fileNameValid(String fileName) {
         if (!fileName.equals("")) {
             Pattern pattern = Pattern.compile("[^a-zA-Z0-9]");
@@ -22,6 +23,7 @@ public class JSONWriter {
         }
     }
 
+    // Creates the file to which the DataFrame data will be saved to
     public void createFile(String fileName){
         try {
             File myObj = new File("DataSet/" + fileName + ".json");
@@ -36,6 +38,7 @@ public class JSONWriter {
         }
     }
 
+    // Adds the data from dataFrame to the file fileName
     public void addDataToJSONFile(DataFrame dataFrame, String fileName){
         try {
             FileWriter myWriter = new FileWriter("DataSet/" + fileName + ".json");
@@ -43,9 +46,8 @@ public class JSONWriter {
             myWriter.write("{");
 
             for (String columnName :   dataFrame.getColumnNames()){
-                myWriter.write("\n\t\"" + columnName + "\"" + " : {");
+                myWriter.write("\n\t\"" + columnName + "\"" + " : [");
 
-                myWriter.write("\n\t\t\"columnValues\"" + " : [");
                 for (int i = 0; i < dataFrame.getRowCount(); i++){
 
                     if (i != dataFrame.getRowCount()-1) {
@@ -57,10 +59,8 @@ public class JSONWriter {
                 }
                 myWriter.write("]");
 
-                if (columnName.equals(dataFrame.getColumnNames()[dataFrame.getColumnNames().length -1])){
-                    myWriter.write("\n\t}");
-                }else{
-                    myWriter.write("\n\t},");
+                if (!columnName.equals(dataFrame.getColumnNames()[dataFrame.getColumnNames().length - 1])) {
+                    myWriter.write(",");
                 }
             }
 
@@ -72,6 +72,7 @@ public class JSONWriter {
         }
     }
 
+    // Main body for saving the dataFrame as a .json file
     public String createJSONFile(DataFrame dataFrame, String fileName){
         if (fileNameValid(fileName)) {
             createFile(fileName);
