@@ -3,14 +3,15 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DataLoader{
 
     private final DataFrame loadedDataFrame = new DataFrame();
 
     // Opens a CSV File and appends each entry in an ArrayList made up of String Arrays
-    private ArrayList<String[]> openCsvFile(String filePath){
-        ArrayList<String[]> csvDataCorrectFormat = new ArrayList<>();
+    private ArrayList<ArrayList<String>> openCsvFile(String filePath){
+        ArrayList<ArrayList<String>> csvDataCorrectFormat = new ArrayList<>();
         ArrayList<String[]> csvData = new ArrayList<>();
 
         // Loads the data from .csv file and appends each row into csvData
@@ -42,15 +43,15 @@ public class DataLoader{
                 }
 
             }
-            csvDataCorrectFormat.add(columnData.toArray(new String[0]));
+            csvDataCorrectFormat.add(columnData);
         }
 
         return csvDataCorrectFormat;
     }
 
     // Opens a JSON File and stores the data to an ArrayList of String Arrays
-    public ArrayList<String[]> openJSONFile(String filePath){
-        ArrayList<String[]> jsonData = new ArrayList<>();
+    public ArrayList<ArrayList<String>> openJSONFile(String filePath){
+        ArrayList<ArrayList<String>> jsonData = new ArrayList<>();
 
         try{
             BufferedReader csvReader = new BufferedReader(new FileReader(filePath));
@@ -60,7 +61,7 @@ public class DataLoader{
                     // Makes it such that the row contains only the data itself separated by commas
                     row = row.replaceAll(" : ", ",").replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", "").replaceAll("\t", "").replaceAll("\\s+", "");
                     String[] columnData = row.split(",");
-                    jsonData.add(columnData);
+                    jsonData.add(new ArrayList<String>(Arrays.asList(columnData)));
                 }
             }
             csvReader.close();
@@ -76,28 +77,26 @@ public class DataLoader{
 
     // Takes in an ArrayList of String[] in the format of {[columnName, columnData..], [columnName, columnData..]..}
     // Loads the data into the dataframe
-    private void createDataFrame(ArrayList<String[]> jsonData){
-        for ( String[] columnData : jsonData ){
-            loadedDataFrame.addColumn(columnData[0]);
-
-            for (int i = 1; i < columnData.length; i++){
-                loadedDataFrame.addValue(columnData[0], columnData[i]);
-            }
-
+    private void createDataFrame(ArrayList<ArrayList<String>> jsonData){
+        for ( ArrayList<String> columnData : jsonData ){
+            String columnName = columnData.get(0);
+            columnData.remove(0);
+            loadedDataFrame.addColumn(columnName, columnData);
         }
     }
 
     // Main body of the code; Returns the loaded data frame given the file path
     public DataFrame loadDataFrame(String filePath){
-        ArrayList<String[]> data;
+        ArrayList<ArrayList<String>> data;
+
         if (filePath.endsWith(".csv")){
             data = openCsvFile(filePath);
         } else {
             data = openJSONFile(filePath);
         }
+
         createDataFrame(data);
         return loadedDataFrame;
     }
-
 
 }
