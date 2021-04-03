@@ -32,6 +32,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private ImageIcon clearIcon;
     private ImageIcon loadIcon;
     private ImageIcon saveIcon;
+    private ImageIcon showIcon;
+    private ImageIcon hideIcon;
 
     // Variables for the dataSelectionPanel
     private JPanel dataSelectionPanel;
@@ -94,11 +96,15 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         clearIcon = new ImageIcon("img/clear.png");
         loadIcon = new ImageIcon("img/load.png");
         saveIcon = new ImageIcon("img/save.png");
+        showIcon = new ImageIcon("img/show.png");
+        hideIcon = new ImageIcon("img/hide.png");
 
         // Adds the menu item's images to the menu option
         clearDataFrameItem.setIcon(clearIcon);
         loadDataFrameItem.setIcon(loadIcon);
         saveDataFrameItem.setIcon(saveIcon);
+        showAllColumnsItem.setIcon(showIcon);
+        hideAllColumnsItem.setIcon(hideIcon);
 
         // Sets the function for when the menu item is clicked
         clearDataFrameItem.addActionListener(this);
