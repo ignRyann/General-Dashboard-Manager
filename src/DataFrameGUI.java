@@ -284,7 +284,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             String fileName = file.getName();
 
             try {
-                if (fileName.substring(fileName.lastIndexOf(".")).equals(".csv")) {
+                if ( fileName.endsWith(".csv") || fileName.endsWith(".json")){
                     currentData.loadDataFrame(file.getAbsolutePath());
                     dataFrameTable.setModel(currentData.getTable());
                     dataFrameTable.setAutoCreateRowSorter(true);
@@ -292,7 +292,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                     updateDataSelectionPanel();
                     searchBarTextField.setText("");
                     updateSearchColumnComboBoxModel();
-                } else {
+                }else {
                     JOptionPane.showMessageDialog(this, "The selected file is not supported. Please choose a .csv file");
                 }
             }catch (StringIndexOutOfBoundsException e){
@@ -327,12 +327,12 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                 File myObj = new File("DataSet/" + fileName + ".json");
                 if (myObj.delete()) {
                     JOptionPane.showMessageDialog(this, currentData.saveToJSONFile(fileName), null, JOptionPane.INFORMATION_MESSAGE);
-                } else {
+                }else {
                     JOptionPane.showMessageDialog(this, "Unable to delete the file", null, JOptionPane.INFORMATION_MESSAGE);
                 }
             }
 
-        }else{
+        }else {
             // Display the status message
             JOptionPane.showMessageDialog(this, statusMessage, null, JOptionPane.INFORMATION_MESSAGE);
         }
