@@ -9,6 +9,7 @@ import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
+import java.security.Key;
 import java.util.Objects;
 
 public class DataFrameGUI extends JFrame implements ActionListener{
@@ -21,14 +22,26 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Variables for the menuBar
     private JMenuBar menuBar;
+
     private JMenu fileMenu;
-    private JMenu checklistMenu;
+    private JMenu displayMenu;
+    private JMenu tableHeadColourSubMenu;
+    private JMenu columnChecklistMenu;
     private JMenu helpMenu;
+
     private JMenuItem clearDataFrameItem;
     private JMenuItem loadDataFrameItem;
     private JMenuItem saveDataFrameItem;
+    private JMenuItem yellowTableHeaderColourItem;
+    private JMenuItem orangeTableHeaderColourItem;
+    private JMenuItem greenTableHeaderColourItem;
+    private JMenuItem cyanTableHeaderColourItem;
+    private JMenuItem magentaTableHeaderColourItem;
+    private JMenuItem redTableHeaderColourItem;
+    private JMenuItem lightGrayTableHeaderColourItem;
     private JMenuItem showAllColumnsItem;
     private JMenuItem hideAllColumnsItem;
+
     private ImageIcon clearIcon;
     private ImageIcon loadIcon;
     private ImageIcon saveIcon;
@@ -82,13 +95,26 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
         // Creates the menu headers
         fileMenu = new JMenu("File");
-        checklistMenu = new JMenu("Checklist");
+        displayMenu = new JMenu("Display Options");
+        columnChecklistMenu = new JMenu("Column Checklist");
+        tableHeadColourSubMenu = new JMenu("Change Table Head Colour");
         helpMenu = new JMenu("Help");
 
-        // Creates the menu items
+        // Creates the menu items for 'File'
         clearDataFrameItem = new JMenuItem("Clear");
         loadDataFrameItem = new JMenuItem("Load");
         saveDataFrameItem = new JMenuItem("Save");
+
+        // Creates the Submenu items for 'Change Table Head Colour'
+        yellowTableHeaderColourItem = new JMenuItem("Yellow");
+        orangeTableHeaderColourItem = new JMenuItem("Green");
+        greenTableHeaderColourItem = new JMenuItem("Orange");
+        cyanTableHeaderColourItem = new JMenuItem("Cyan");
+        magentaTableHeaderColourItem = new JMenuItem("Magenta");
+        redTableHeaderColourItem = new JMenuItem("Red");
+        lightGrayTableHeaderColourItem = new JMenuItem("Light Gray");
+
+        // Creates the menu items for 'Column Checklist'
         showAllColumnsItem = new JMenuItem("Show All Columns");
         hideAllColumnsItem = new JMenuItem("Hide All Columns");
 
@@ -110,12 +136,21 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         clearDataFrameItem.addActionListener(this);
         loadDataFrameItem.addActionListener(this);
         saveDataFrameItem.addActionListener(this);
+
+        yellowTableHeaderColourItem.addActionListener(this);
+        orangeTableHeaderColourItem.addActionListener(this);
+        greenTableHeaderColourItem.addActionListener(this);
+        cyanTableHeaderColourItem.addActionListener(this);
+        magentaTableHeaderColourItem.addActionListener(this);
+        redTableHeaderColourItem.addActionListener(this);
+        lightGrayTableHeaderColourItem.addActionListener(this);
+
         showAllColumnsItem.addActionListener(this);
         hideAllColumnsItem.addActionListener(this);
 
         // Shortcuts added for easier usability
         fileMenu.setMnemonic(KeyEvent.VK_F); // Keyboard shortcut : [Alt + f] or [Ctrl + Option + f] for File
-        checklistMenu.setMnemonic(KeyEvent.VK_C); // Keyboard shortcut : [Alt + c] or [Ctrl + Option + c] for Checklist
+        displayMenu.setMnemonic(KeyEvent.VK_D); // Keyboard shortcut : [Alt + d] or [Ctrl + Option + d] for Checklist
         clearDataFrameItem.setMnemonic(KeyEvent.VK_C); // Keyboard shortcut : [c] for Clear
         loadDataFrameItem.setMnemonic(KeyEvent.VK_L); // Keyboard shortcut : [l] for Load
         saveDataFrameItem.setMnemonic(KeyEvent.VK_S); // Keyboard shortcut : [s] for Save
@@ -126,12 +161,21 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         fileMenu.add(clearDataFrameItem);
         fileMenu.add(loadDataFrameItem);
         fileMenu.add(saveDataFrameItem);
-        checklistMenu.add(showAllColumnsItem);
-        checklistMenu.add(hideAllColumnsItem);
+
+        tableHeadColourSubMenu.add(yellowTableHeaderColourItem);
+        tableHeadColourSubMenu.add(orangeTableHeaderColourItem);
+        tableHeadColourSubMenu.add(greenTableHeaderColourItem);
+        tableHeadColourSubMenu.add(cyanTableHeaderColourItem);
+        tableHeadColourSubMenu.add(magentaTableHeaderColourItem);
+        tableHeadColourSubMenu.add(redTableHeaderColourItem);
+        tableHeadColourSubMenu.add(lightGrayTableHeaderColourItem);
+        displayMenu.add(tableHeadColourSubMenu);
+
+        columnChecklistMenu.add(showAllColumnsItem);
+        columnChecklistMenu.add(hideAllColumnsItem);
 
         // Adds the menu headers to the menu bar
         menuBar.add(fileMenu);
-        menuBar.add(checklistMenu);
         menuBar.add(helpMenu);
 
         // Adds the menu bar to the GUI
@@ -150,7 +194,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     // Creates the displayDataPanel
     private void createDisplayDataPanel(){
         displayDataPanel = new JPanel(new BorderLayout());
-        displayDataPanel.setPreferredSize(new Dimension(1500, 750));
+        displayDataPanel.setPreferredSize(new Dimension(1400, 750));
         displayDataPanel.setBorder(BorderFactory.createEtchedBorder());
 
         // Creates a new JTable
@@ -175,7 +219,6 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         dataFrameTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         dataFrameTable.getTableHeader().setResizingAllowed(false);
         dataFrameTable.setCellSelectionEnabled(true);
-//        dataFrameTable.getTableHeader().setReorderingAllowed(false);
         dataFrameTable.getColumnModel().setColumnMargin(20);
         dataFrameTable.getTableHeader().setBackground(Color.MAGENTA);
 
@@ -267,12 +310,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         // Empties the DataFrame and updates the table and checklist Panel
         currentData.emptyDataFrame();
         dataFrameTable.setModel(currentData.getTable());
-        updateDataSelectionPanel();
 
-        // Resets the components within the searchBarPanel
-        searchBarTextField.setText("");
-        searchColumnComboBoxModel.removeAllElements();
-        searchColumnComboBoxModel.addElement("All");
+        updateMenuBar(false);
+        updateDataSelectionPanel();
+        updateSearchBarPanel(false);
     }
 
     // Loads the file into the DataFrame Dashboard
@@ -289,9 +330,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                     dataFrameTable.setModel(currentData.getTable());
                     dataFrameTable.setAutoCreateRowSorter(true);
 
+                    updateMenuBar(true);
                     updateDataSelectionPanel();
-                    searchBarTextField.setText("");
-                    updateSearchColumnComboBoxModel();
+                    updateSearchBarPanel(true);
                 }else {
                     JOptionPane.showMessageDialog(this, "The selected file is not supported. Please choose a .csv file");
                 }
@@ -354,7 +395,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             checkBox.addItemListener(event -> {
                 JCheckBox cb = (JCheckBox) event.getSource();
                 currentData.changeColumnState(checkBox.getText(), cb.isSelected());
-                updateSearchColumnComboBoxModel();
+                updateSearchBarPanel(true);
                 dataFrameTable.setModel(currentData.getTable());
             });
 
@@ -366,13 +407,29 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         dataSelectionPanel.repaint();
     }
 
-    // Updates the searchColumnComboBoxModel to show the column names that are displayed
-    private void updateSearchColumnComboBoxModel(){
+    // Updates the searchBarPanel
+    private void updateSearchBarPanel(Boolean dataLoadedIn){
         searchColumnComboBoxModel.removeAllElements();
         searchColumnComboBoxModel.addElement("All");
-        for (String column : currentData.getShownColumnNames()){
-            searchColumnComboBoxModel.addElement(column);
+        searchBarTextField.setText("");
+
+        // if data is loaded in the Dashboard Manager, add the column names that are displayed in the table
+        if (dataLoadedIn) {
+            for (String column : currentData.getShownColumnNames()) {
+                searchColumnComboBoxModel.addElement(column);
+            }
         }
+    }
+
+    private void updateMenuBar(Boolean dataLoadedIn){
+        menuBar.removeAll();
+        menuBar.add(fileMenu);
+        if (dataLoadedIn){
+            menuBar.add(displayMenu);
+            menuBar.add(columnChecklistMenu);
+        }
+        menuBar.add(helpMenu);
+
     }
 
     // Selects or Deselects all the checkboxes within dataSelectionPanel
@@ -390,10 +447,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         if (e.getSource() == clearDataFrameItem){
             clearData();
         }
-        if (e.getSource() == loadDataFrameItem){
+        else if (e.getSource() == loadDataFrameItem){
             loadFile();
         }
-        if (e.getSource() == saveDataFrameItem){
+        else if (e.getSource() == saveDataFrameItem){
             saveFile();
         }
 
@@ -402,12 +459,33 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             searchBarTextField.setText("");
         }
 
+        // If the user wishes to change the colour of the table headers
+        if (e.getSource() == yellowTableHeaderColourItem){
+            dataFrameTable.getTableHeader().setBackground(Color.YELLOW);
+        }
+        else if (e.getSource() == orangeTableHeaderColourItem){
+            dataFrameTable.getTableHeader().setBackground(Color.ORANGE);
+        }
+        else if (e.getSource() == greenTableHeaderColourItem) {
+            dataFrameTable.getTableHeader().setBackground(Color.GREEN);
+        }
+        else if (e.getSource() == cyanTableHeaderColourItem) {
+            dataFrameTable.getTableHeader().setBackground(Color.CYAN);
+        }
+        else if (e.getSource() == magentaTableHeaderColourItem) {
+            dataFrameTable.getTableHeader().setBackground(Color.MAGENTA);
+        }
+        else if (e.getSource() == redTableHeaderColourItem) {
+            dataFrameTable.getTableHeader().setBackground(Color.RED);
+        }
+        else if (e.getSource() == lightGrayTableHeaderColourItem) {
+            dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
+        }
+
         // Actions for when the user chooses to either show/hide all columns
         if (e.getSource() == showAllColumnsItem){
             checkAllBoxes(true);
-        }
-
-        if (e.getSource() == hideAllColumnsItem){
+        }else if (e.getSource() == hideAllColumnsItem){
             checkAllBoxes(false);
         }
 
