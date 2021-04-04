@@ -173,10 +173,11 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
         // Commands for better readability of the data
         dataFrameTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        dataFrameTable.getTableHeader().setResizingAllowed(false);
         dataFrameTable.setCellSelectionEnabled(true);
 //        dataFrameTable.getTableHeader().setReorderingAllowed(false);
         dataFrameTable.getColumnModel().setColumnMargin(20);
-        dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
+        dataFrameTable.getTableHeader().setBackground(Color.MAGENTA);
 
         // Adds it onto a scrollable component and then adds it to the displayDataPanel
         scrollableDataFrameTable = new JScrollPane(dataFrameTable);
@@ -235,10 +236,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                         dataFrameTable.setRowSorter(sorter);
                         searchBarMatchesLabel.setText(dataFrameTable.getRowCount() + " matches found.");
                     }else {
-                        dataFrameTable.setRowSorter(null);
+                        dataFrameTable.setAutoCreateRowSorter(true);
                         searchBarMatchesLabel.setText("0 matches found.");
                     }
-
                 }catch (BadLocationException e1){
                     e1.printStackTrace();
                 }
