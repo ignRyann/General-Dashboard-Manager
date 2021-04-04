@@ -61,7 +61,7 @@ public class DataLoader{
                     // Makes it such that the row contains only the data itself separated by commas
                     row = row.replaceAll(" : ", ",").replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", "").replaceAll("\t", "");
                     String[] columnData = row.split(",");
-                    jsonData.add(new ArrayList<String>(Arrays.asList(columnData)));
+                    jsonData.add(new ArrayList<>(Arrays.asList(columnData)));
                 }
             }
             csvReader.close();
@@ -75,7 +75,7 @@ public class DataLoader{
         return jsonData;
     }
 
-    // Takes in an ArrayList of String[] in the format of {[columnName, columnData..], [columnName, columnData..]..}
+    // Takes in an ArrayList of String[] in the format of {[columnName, columnData..], [columnName, columnData..], ..}
     // Loads the data into the dataframe
     private void createDataFrame(ArrayList<ArrayList<String>> fileData){
         for ( ArrayList<String> columnData : fileData ){

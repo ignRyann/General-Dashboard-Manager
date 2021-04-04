@@ -41,8 +41,8 @@ public class JSONWriter {
 
             myWriter.write("{");
 
-            for (String columnName :   dataFrame.getColumnNames()){
-                myWriter.write("\n\t\"" + columnName + "\"" + " : [");
+            for (String columnName : dataFrame.getColumnNames()){
+                myWriter.write("\n\t\"" + columnName + "\" : [");
 
                 for (int i = 0; i < dataFrame.getRowCount(); i++){
 
