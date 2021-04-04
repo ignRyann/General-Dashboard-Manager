@@ -7,9 +7,10 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
-import java.security.Key;
 import java.util.Objects;
 
 public class DataFrameGUI extends JFrame implements ActionListener{
@@ -156,6 +157,14 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         saveDataFrameItem.setMnemonic(KeyEvent.VK_S); // Keyboard shortcut : [s] for Save
         showAllColumnsItem.setMnemonic(KeyEvent.VK_S); // Keyboard shortcut : [s] for Show All Columns
         hideAllColumnsItem.setMnemonic(KeyEvent.VK_H); // Keyboard shortcut : [h] for Hide All Columns
+
+        yellowTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+        orangeTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+        greenTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
+        cyanTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
+        magentaTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
+        redTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
+        lightGrayTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
 
         // Adds the menu item's to the menu headers
         fileMenu.add(clearDataFrameItem);
@@ -421,6 +430,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         }
     }
 
+    // Updates the menu bar everytime the data is changed
     private void updateMenuBar(Boolean dataLoadedIn){
         menuBar.removeAll();
         menuBar.add(fileMenu);
