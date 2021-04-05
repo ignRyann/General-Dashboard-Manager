@@ -108,8 +108,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
         // Creates the Submenu items for 'Change Table Head Colour'
         yellowTableHeaderColourItem = new JMenuItem("Yellow");
-        orangeTableHeaderColourItem = new JMenuItem("Green");
-        greenTableHeaderColourItem = new JMenuItem("Orange");
+        orangeTableHeaderColourItem = new JMenuItem("Orange");
+        greenTableHeaderColourItem = new JMenuItem("Green");
         cyanTableHeaderColourItem = new JMenuItem("Cyan");
         magentaTableHeaderColourItem = new JMenuItem("Magenta");
         redTableHeaderColourItem = new JMenuItem("Red");
