@@ -71,4 +71,8 @@ public class Model {
         }
     }
 
+    public Boolean isEmpty(){
+        return currentDataFrame.isEmpty();
+    }
+
 }

@@ -72,6 +72,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         createGUI();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
+        setMinimumSize(new Dimension(1000, 400 ));
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -366,30 +367,32 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         dataSelectionPanel.removeAll();
         dataSelectionPanel.setLayout(new GridLayout(currentData.getColumnNames().length +2, 1, 10, 0));
 
-        showAllColumnsButton = new JButton("Show All Columns");
-        hideAllColumnsButton = new JButton("Hide All Columns");
+        if (!currentData.isEmpty()){
+            showAllColumnsButton = new JButton("Show All Columns");
+            hideAllColumnsButton = new JButton("Hide All Columns");
 
-        showAllColumnsButton.addActionListener(e -> checkAllBoxes(true));
-        hideAllColumnsButton.addActionListener(e -> checkAllBoxes(false));
+            showAllColumnsButton.addActionListener(e -> checkAllBoxes(true));
+            hideAllColumnsButton.addActionListener(e -> checkAllBoxes(false));
 
-        dataSelectionPanel.add(showAllColumnsButton);
-        dataSelectionPanel.add(hideAllColumnsButton);
+            dataSelectionPanel.add(showAllColumnsButton);
+            dataSelectionPanel.add(hideAllColumnsButton);
 
-        // Creates a checkbox for each Column Name in the DataFrame
-        for (String columnName : currentData.getColumnNames()){
-            JCheckBox checkBox = new JCheckBox();
-            checkBox.setText(columnName);
-            checkBox.setSelected(true);
+            // Creates a checkbox for each Column Name in the DataFrame
+            for (String columnName : currentData.getColumnNames()) {
+                JCheckBox checkBox = new JCheckBox();
+                checkBox.setText(columnName);
+                checkBox.setSelected(true);
 
-            // Depending on the state of the checkbox, it should show/hide the corresponding column
-            checkBox.addItemListener(event -> {
-                JCheckBox cb = (JCheckBox) event.getSource();
-                currentData.changeColumnState(checkBox.getText(), cb.isSelected());
-                updateSearchBarPanel(true);
-                dataFrameTable.setModel(currentData.getTable());
-            });
+                // Depending on the state of the checkbox, it should show/hide the corresponding column
+                checkBox.addItemListener(event -> {
+                    JCheckBox cb = (JCheckBox) event.getSource();
+                    currentData.changeColumnState(checkBox.getText(), cb.isSelected());
+                    updateSearchBarPanel(true);
+                    dataFrameTable.setModel(currentData.getTable());
+                });
 
-            dataSelectionPanel.add(checkBox);
+                dataSelectionPanel.add(checkBox);
+            }
         }
 
         // Refreshes the dataSelectionPanel
@@ -426,9 +429,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private void checkAllBoxes(Boolean state){
         Component[] components = dataSelectionPanel.getComponents();
 
-        for (int i = 0; i < components.length; i++){
-            if (components[i] instanceof JCheckBox){
-                JCheckBox checkbox = (JCheckBox) components[i];
+        for (Component component : components) {
+            if (component instanceof JCheckBox) {
+                JCheckBox checkbox = (JCheckBox) component;
                 checkbox.setSelected(state);
             }
         }
