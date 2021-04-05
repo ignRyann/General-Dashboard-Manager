@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,8 +42,18 @@ public class JSONWriter {
             myWriter.write("{");
 
             for (String columnName : dataFrame.getColumnNames()){
-                myWriter.write("\n\t\"" + columnName + "\" : \"");
-                myWriter.write(Arrays.toString(dataFrame.getColumnValues(columnName)) + "\"");
+                myWriter.write("\n\t\"" + columnName + "\" : [");
+
+                for (int i = 0; i < dataFrame.getRowCount(); i++){
+
+                    if (i != dataFrame.getRowCount()-1) {
+                        myWriter.write("\"" + dataFrame.getColumnValues(columnName)[i] + "\",");
+                    }else{
+                        myWriter.write("\"" + dataFrame.getColumnValues(columnName)[i] + "\"");
+                    }
+
+                }
+                myWriter.write("]");
 
                 if (!columnName.equals(dataFrame.getColumnNames()[dataFrame.getColumnNames().length - 1])) {
                     myWriter.write(",");

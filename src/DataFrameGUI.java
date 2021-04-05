@@ -27,7 +27,6 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private JMenu fileMenu;
     private JMenu displayMenu;
     private JMenu tableHeadColourSubMenu;
-    private JMenu columnChecklistMenu;
     private JMenu helpMenu;
 
     private JMenuItem clearDataFrameItem;
@@ -40,17 +39,15 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private JMenuItem magentaTableHeaderColourItem;
     private JMenuItem redTableHeaderColourItem;
     private JMenuItem lightGrayTableHeaderColourItem;
-    private JMenuItem showAllColumnsItem;
-    private JMenuItem hideAllColumnsItem;
 
     private ImageIcon clearIcon;
     private ImageIcon loadIcon;
     private ImageIcon saveIcon;
-    private ImageIcon showIcon;
-    private ImageIcon hideIcon;
 
     // Variables for the dataSelectionPanel
     private JPanel dataSelectionPanel;
+    private JButton showAllColumnsButton;
+    private JButton hideAllColumnsButton;
 
     // Variables for the displayDataPanel
     private JPanel displayDataPanel;
@@ -83,7 +80,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private void createGUI(){
         setTitle("DataFrame Dashboard");
         addMenuBar();
-        createColumnChecklistPanel();
+        createDataSelectionPanel();
         createDisplayDataPanel();
         createSearchBarPanel();
         addBackPanel();
@@ -97,7 +94,6 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         // Creates the menu headers
         fileMenu = new JMenu("File");
         displayMenu = new JMenu("Display Options");
-        columnChecklistMenu = new JMenu("Column Checklist");
         tableHeadColourSubMenu = new JMenu("Change Table Head Colour");
         helpMenu = new JMenu("Help");
 
@@ -115,23 +111,15 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         redTableHeaderColourItem = new JMenuItem("Red");
         lightGrayTableHeaderColourItem = new JMenuItem("Light Gray");
 
-        // Creates the menu items for 'Column Checklist'
-        showAllColumnsItem = new JMenuItem("Show All Columns");
-        hideAllColumnsItem = new JMenuItem("Hide All Columns");
-
         // Sets the menu item's images
         clearIcon = new ImageIcon("img/clear.png");
         loadIcon = new ImageIcon("img/load.png");
         saveIcon = new ImageIcon("img/save.png");
-        showIcon = new ImageIcon("img/show.png");
-        hideIcon = new ImageIcon("img/hide.png");
 
         // Adds the menu item's images to the menu option
         clearDataFrameItem.setIcon(clearIcon);
         loadDataFrameItem.setIcon(loadIcon);
         saveDataFrameItem.setIcon(saveIcon);
-        showAllColumnsItem.setIcon(showIcon);
-        hideAllColumnsItem.setIcon(hideIcon);
 
         // Sets the function for when the menu item is clicked
         clearDataFrameItem.addActionListener(this);
@@ -146,23 +134,12 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         redTableHeaderColourItem.addActionListener(this);
         lightGrayTableHeaderColourItem.addActionListener(this);
 
-        showAllColumnsItem.addActionListener(this);
-        hideAllColumnsItem.addActionListener(this);
-
         // Shortcuts added for easier usability
         fileMenu.setMnemonic(KeyEvent.VK_F); // Keyboard shortcut : [Alt + f] or [Ctrl + Option + f] for File
         displayMenu.setMnemonic(KeyEvent.VK_D); // Keyboard shortcut : [Alt + d] or [Ctrl + Option + d] for Checklist
         clearDataFrameItem.setMnemonic(KeyEvent.VK_C); // Keyboard shortcut : [c] for Clear
         loadDataFrameItem.setMnemonic(KeyEvent.VK_L); // Keyboard shortcut : [l] for Load
         saveDataFrameItem.setMnemonic(KeyEvent.VK_S); // Keyboard shortcut : [s] for Save
-        showAllColumnsItem.setMnemonic(KeyEvent.VK_S); // Keyboard shortcut : [s] for Show All Columns
-        hideAllColumnsItem.setMnemonic(KeyEvent.VK_H); // Keyboard shortcut : [h] for Hide All Columns
-
-        clearDataFrameItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-        loadDataFrameItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
-        saveDataFrameItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-        showAllColumnsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
-        hideAllColumnsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 
         // Adds the menu item's to the menu headers
         fileMenu.add(clearDataFrameItem);
@@ -178,9 +155,6 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         tableHeadColourSubMenu.add(lightGrayTableHeaderColourItem);
         displayMenu.add(tableHeadColourSubMenu);
 
-        columnChecklistMenu.add(showAllColumnsItem);
-        columnChecklistMenu.add(hideAllColumnsItem);
-
         // Adds the menu headers to the menu bar
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
@@ -191,8 +165,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     }
 
     // Creates the dataSelectionPanel where the user will be able to select which columns are displayed/hidden
-    private void createColumnChecklistPanel(){
-        dataSelectionPanel = new JPanel(new GridLayout(currentData.getColumnNames().length, 1, 10, 0));
+    private void createDataSelectionPanel(){
+        dataSelectionPanel = new JPanel();
         dataSelectionPanel.setPreferredSize(new Dimension(200, 750));
         dataSelectionPanel.setBorder(BorderFactory.createEtchedBorder());
 
@@ -390,7 +364,16 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private void updateDataSelectionPanel(){
         // Removes any previous data and creates a new layout
         dataSelectionPanel.removeAll();
-        dataSelectionPanel.setLayout(new GridLayout(currentData.getColumnNames().length, 1, 10, 0));
+        dataSelectionPanel.setLayout(new GridLayout(currentData.getColumnNames().length +2, 1, 10, 0));
+
+        showAllColumnsButton = new JButton("Show All Columns");
+        hideAllColumnsButton = new JButton("Hide All Columns");
+
+        showAllColumnsButton.addActionListener(e -> checkAllBoxes(true));
+        hideAllColumnsButton.addActionListener(e -> checkAllBoxes(false));
+
+        dataSelectionPanel.add(showAllColumnsButton);
+        dataSelectionPanel.add(hideAllColumnsButton);
 
         // Creates a checkbox for each Column Name in the DataFrame
         for (String columnName : currentData.getColumnNames()){
@@ -434,7 +417,6 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         menuBar.add(fileMenu);
         if (dataLoadedIn){
             menuBar.add(displayMenu);
-            menuBar.add(columnChecklistMenu);
         }
         menuBar.add(helpMenu);
 
@@ -442,10 +424,15 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Selects or Deselects all the checkboxes within dataSelectionPanel
     private void checkAllBoxes(Boolean state){
-        for (int i = 0; i < dataSelectionPanel.getComponentCount(); i++) {
-            JCheckBox checkBox = (JCheckBox) dataSelectionPanel.getComponent(i);
-            checkBox.setSelected(state);
+        Component[] components = dataSelectionPanel.getComponents();
+
+        for (int i = 0; i < components.length; i++){
+            if (components[i] instanceof JCheckBox){
+                JCheckBox checkbox = (JCheckBox) components[i];
+                checkbox.setSelected(state);
+            }
         }
+
     }
 
     @Override
@@ -490,12 +477,6 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
         }
 
-        // Actions for when the user chooses to either show/hide all columns
-        if (e.getSource() == showAllColumnsItem){
-            checkAllBoxes(true);
-        }else if (e.getSource() == hideAllColumnsItem){
-            checkAllBoxes(false);
-        }
 
     }
 

@@ -50,7 +50,7 @@ public class DataLoader{
     }
 
     // Opens a JSON File and stores the data to an ArrayList of String Arrays
-    private ArrayList<ArrayList<String>> openJSONFile(String filePath){
+    public ArrayList<ArrayList<String>> openJSONFile(String filePath){
         ArrayList<ArrayList<String>> jsonData = new ArrayList<>();
 
         try{
@@ -59,8 +59,8 @@ public class DataLoader{
             while (((row = csvReader.readLine()) != null)){
                 if ( !((row.equals("{")) || (row.equals("}"))) ){
                     // Makes it such that the row contains only the data itself separated by commas
-                    row = row.replaceAll(" :", ",").replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", "").replaceAll("\t", "");
-                    String[] columnData = row.split(", ");
+                    row = row.replaceAll(" : ", ",").replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", "").replaceAll("\t", "");
+                    String[] columnData = row.split(",");
                     jsonData.add(new ArrayList<>(Arrays.asList(columnData)));
                 }
             }
