@@ -158,13 +158,11 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         showAllColumnsItem.setMnemonic(KeyEvent.VK_S); // Keyboard shortcut : [s] for Show All Columns
         hideAllColumnsItem.setMnemonic(KeyEvent.VK_H); // Keyboard shortcut : [h] for Hide All Columns
 
-        yellowTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
-        orangeTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
-        greenTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
-        cyanTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
-        magentaTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
-        redTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F6, 0));
-        lightGrayTableHeaderColourItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0));
+        clearDataFrameItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0));
+        loadDataFrameItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
+        saveDataFrameItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0));
+        showAllColumnsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F4, 0));
+        hideAllColumnsItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0));
 
         // Adds the menu item's to the menu headers
         fileMenu.add(clearDataFrameItem);
