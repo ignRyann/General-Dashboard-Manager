@@ -17,7 +17,7 @@ import java.util.regex.PatternSyntaxException;
 public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Variables for DataFrame
-    private final Model currentData = new Model();
+    private final Model currentData;
 
     // Variables for the backPanel
     private JPanel backPanel;
@@ -75,6 +75,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Main body for the DataFrameGUI
     public DataFrameGUI(){
+        currentData = new Model();
         createGUI();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         pack();
@@ -133,9 +134,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         // Creates the Submenu items for 'Change Text Style'
         textStyleRadioButtonGroup = new ButtonGroup();
         textStyleRadioButtonGroup.add(plainTextItem = new JRadioButtonMenuItem("Plain"));
-        plainTextItem.setSelected(true);
         textStyleRadioButtonGroup.add(italicTextItem = new JRadioButtonMenuItem("Italic"));
         textStyleRadioButtonGroup.add(boldTextItem = new JRadioButtonMenuItem("Bold"));
+        plainTextItem.setSelected(true);
 
         // Adds the menu item's images to the menu option
         clearDataFrameItem.setIcon(new ImageIcon("img/clear.png"));
@@ -538,6 +539,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
         }
 
+        // If the user wishes to change the style of the text
         if (e.getSource() == plainTextItem){
             textStyle = 0;
             dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));

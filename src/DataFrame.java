@@ -85,6 +85,7 @@ public class DataFrame{
         return columnValues.toArray(new String[0]);
     }
 
+    // Returns 'true' if DataFrame is empty, and vice versa
     public Boolean isEmpty(){
         return Columns.size() == 0;
     }
