@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.util.Objects;
+import java.util.regex.PatternSyntaxException;
 
 public class DataFrameGUI extends JFrame implements ActionListener{
 
@@ -27,6 +28,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private JMenu fileMenu;
     private JMenu displayMenu;
     private JMenu tableHeadColourSubMenu;
+    private JMenu textSizeSubMenu;
     private JMenu helpMenu;
 
     private JMenuItem clearDataFrameItem;
@@ -39,10 +41,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private JMenuItem magentaTableHeaderColourItem;
     private JMenuItem redTableHeaderColourItem;
     private JMenuItem lightGrayTableHeaderColourItem;
-
-    private ImageIcon clearIcon;
-    private ImageIcon loadIcon;
-    private ImageIcon saveIcon;
+    private JSlider textSizeSlider;
 
     // Variables for the dataSelectionPanel
     private JPanel dataSelectionPanel;
@@ -63,6 +62,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Variables for saving the data to a .json file
     private JTextField fileNameTextField;
+    private String folderLocation;
     private String fileName;
     private String statusMessage;
     private JCheckBox overwriteFileCheckBox;
@@ -80,28 +80,38 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     // Creates the individual components and adds them together
     private void createGUI(){
         setTitle("DataFrame Dashboard");
-        addMenuBar();
+        createMenuBar();
         createDataSelectionPanel();
         createDisplayDataPanel();
         createSearchBarPanel();
+        setJMenuBar(menuBar);
         addBackPanel();
 
     }
 
     // Creates the Menu Bar and adds it
-    private void addMenuBar(){
+    private void createMenuBar(){
         menuBar = new JMenuBar();
 
         // Creates the menu headers
         fileMenu = new JMenu("File");
         displayMenu = new JMenu("Display Options");
         tableHeadColourSubMenu = new JMenu("Change Table Head Colour");
+        textSizeSubMenu = new JMenu("Change Font Size");
         helpMenu = new JMenu("Help");
 
         // Creates the menu items for 'File'
         clearDataFrameItem = new JMenuItem("Clear");
         loadDataFrameItem = new JMenuItem("Load");
         saveDataFrameItem = new JMenuItem("Save");
+
+        // Creates the Slider for 'Change Font Size'
+        textSizeSlider = new JSlider(8, 16, 12);
+        textSizeSlider.setPaintTicks(true);
+        textSizeSlider.setMajorTickSpacing(4);
+        textSizeSlider.setPaintLabels(true);
+        textSizeSlider.setOrientation(SwingConstants.VERTICAL);
+        textSizeSlider.addChangeListener(e -> dataFrameTable.setFont(new Font("Dialog", Font.PLAIN, textSizeSlider.getValue())));
 
         // Creates the Submenu items for 'Change Table Head Colour'
         yellowTableHeaderColourItem = new JMenuItem("Yellow");
@@ -112,15 +122,17 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         redTableHeaderColourItem = new JMenuItem("Red");
         lightGrayTableHeaderColourItem = new JMenuItem("Light Gray");
 
-        // Sets the menu item's images
-        clearIcon = new ImageIcon("img/clear.png");
-        loadIcon = new ImageIcon("img/load.png");
-        saveIcon = new ImageIcon("img/save.png");
-
         // Adds the menu item's images to the menu option
-        clearDataFrameItem.setIcon(clearIcon);
-        loadDataFrameItem.setIcon(loadIcon);
-        saveDataFrameItem.setIcon(saveIcon);
+        clearDataFrameItem.setIcon(new ImageIcon("img/clear.png"));
+        loadDataFrameItem.setIcon(new ImageIcon("img/load.png"));
+        saveDataFrameItem.setIcon(new ImageIcon("img/save.png"));
+        yellowTableHeaderColourItem.setIcon(new ImageIcon("img/yellow.png"));
+        orangeTableHeaderColourItem.setIcon(new ImageIcon("img/orange.png"));
+        greenTableHeaderColourItem.setIcon(new ImageIcon("img/green.png"));
+        cyanTableHeaderColourItem.setIcon(new ImageIcon("img/cyan.png"));
+        magentaTableHeaderColourItem.setIcon(new ImageIcon("img/magenta.png"));
+        redTableHeaderColourItem.setIcon(new ImageIcon("img/red.png"));
+        lightGrayTableHeaderColourItem.setIcon(new ImageIcon("img/lightGray.png"));
 
         // Sets the function for when the menu item is clicked
         clearDataFrameItem.addActionListener(this);
@@ -154,14 +166,17 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         tableHeadColourSubMenu.add(magentaTableHeaderColourItem);
         tableHeadColourSubMenu.add(redTableHeaderColourItem);
         tableHeadColourSubMenu.add(lightGrayTableHeaderColourItem);
+        textSizeSubMenu.add(textSizeSlider);
+
         displayMenu.add(tableHeadColourSubMenu);
+        displayMenu.add(textSizeSubMenu);
+
+
 
         // Adds the menu headers to the menu bar
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
 
-        // Adds the menu bar to the GUI
-        setJMenuBar(menuBar);
 
     }
 
@@ -202,7 +217,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         dataFrameTable.getTableHeader().setResizingAllowed(false);
         dataFrameTable.setCellSelectionEnabled(true);
         dataFrameTable.getColumnModel().setColumnMargin(20);
-        dataFrameTable.getTableHeader().setBackground(Color.MAGENTA);
+        dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
 
         // Adds it onto a scrollable component and then adds it to the displayDataPanel
         scrollableDataFrameTable = new JScrollPane(dataFrameTable);
@@ -221,8 +236,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         searchColumnComboBox.addActionListener(this);
 
         // Creates the searchBarTextField
-        searchBarTextField = new PlaceholderTextField();
-        searchBarTextField.setPlaceholder(" Search Bar");
+        searchBarTextField = new PlaceholderTextField(" Search Bar");
         searchBarTextField.setPreferredSize(new Dimension(500, 30));
 
         searchBarMatchesLabel = new JLabel("0 matches found.");
@@ -264,8 +278,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                         dataFrameTable.setAutoCreateRowSorter(true);
                         searchBarMatchesLabel.setText("0 matches found.");
                     }
-                }catch (BadLocationException e1){
-                    e1.printStackTrace();
+                }
+                catch (BadLocationException | PatternSyntaxException e1){
+                    System.out.println(e1);
                 }
             }
         });
@@ -293,6 +308,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         currentData.emptyDataFrame();
         dataFrameTable.setModel(currentData.getTable());
 
+        resetDisplaySettings();
         updateMenuBar(false);
         updateDataSelectionPanel();
         updateSearchBarPanel(false);
@@ -300,7 +316,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Loads the file into the DataFrame Dashboard
     private void loadFile() {
-        JFileChooser fc = new JFileChooser(".");
+        JFileChooser fc = new JFileChooser("./DataSet/");
         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
             File file = fc.getSelectedFile();
@@ -336,29 +352,40 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Main body to save the data as a .json file
     private void saveFile(){
+        // Retrieves the name the user wishes to save file as
         getFileName();
-        // Saves the status message to display later
-        statusMessage = currentData.saveToJSONFile(fileName);
 
-        // If the filename already exists, give the user the option to replace it
-        if (statusMessage.equals("The file " + fileName + ".json already exists")){
-            overwriteFileCheckBox = new JCheckBox("Overwrite " + fileName + ".json");
-            Object[] msgContent = {statusMessage, overwriteFileCheckBox};
-            JOptionPane.showConfirmDialog(this,  msgContent,  null, JOptionPane.YES_NO_OPTION);
+        // Lets the user choose which folder to save the file in
+        JFileChooser fc = new JFileChooser("./DataSet/");
+        fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
+        {
+            folderLocation = fc.getCurrentDirectory().getAbsolutePath();
 
-            if (overwriteFileCheckBox.isSelected()){
-                File myObj = new File("DataSet/" + fileName + ".json");
-                if (myObj.delete()) {
-                    JOptionPane.showMessageDialog(this, currentData.saveToJSONFile(fileName), null, JOptionPane.INFORMATION_MESSAGE);
-                }else {
-                    JOptionPane.showMessageDialog(this, "Unable to delete the file", null, JOptionPane.INFORMATION_MESSAGE);
+            // Saves the status message to display later
+            statusMessage = currentData.saveToJSONFile(folderLocation, fileName);
+
+            // If the filename already exists, give the user the option to replace it
+            if (statusMessage.equals("The file " + fileName + ".json already exists")){
+                overwriteFileCheckBox = new JCheckBox("Overwrite " + fileName + ".json");
+                Object[] msgContent = {statusMessage, overwriteFileCheckBox};
+                JOptionPane.showConfirmDialog(this,  msgContent,  null, JOptionPane.YES_NO_OPTION);
+
+                if (overwriteFileCheckBox.isSelected()){
+                    File myObj = new File(folderLocation + "/" + fileName + ".json");
+                    if (myObj.delete()) {
+                        JOptionPane.showMessageDialog(this, currentData.saveToJSONFile(folderLocation, fileName), null, JOptionPane.INFORMATION_MESSAGE);
+                    }else {
+                        JOptionPane.showMessageDialog(this, "Unable to delete the file", null, JOptionPane.INFORMATION_MESSAGE);
+                    }
                 }
-            }
 
-        }else {
-            // Display the status message
-            JOptionPane.showMessageDialog(this, statusMessage, null, JOptionPane.INFORMATION_MESSAGE);
+            }else {
+                // Display the status message
+                JOptionPane.showMessageDialog(this, statusMessage, null, JOptionPane.INFORMATION_MESSAGE);
+            }
         }
+
     }
 
     // Updates the dataSelectionPanel with the Column Names of the DataFrame loaded in
@@ -423,6 +450,11 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         }
         menuBar.add(helpMenu);
 
+    }
+
+    private void resetDisplaySettings(){
+        textSizeSlider.setValue(12);
+        dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
     }
 
     // Selects or Deselects all the checkboxes within dataSelectionPanel

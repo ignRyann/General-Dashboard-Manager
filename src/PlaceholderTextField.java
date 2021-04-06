@@ -1,11 +1,15 @@
-import java.awt.*;
 import javax.swing.*;
+import java.awt.*;
 
 public class PlaceholderTextField extends JTextField {
     private String placeholder;
 
     public PlaceholderTextField(){
         placeholder = "";
+    }
+
+    public PlaceholderTextField(String placeholderText){
+        placeholder = placeholderText;
     }
 
     @Override
@@ -19,7 +23,7 @@ public class PlaceholderTextField extends JTextField {
         final Graphics2D g = (Graphics2D) pG;
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(getDisabledTextColor());
-        g.drawString(placeholder, getInsets().left, pG.getFontMetrics().getMaxAscent() + getInsets().top);
+        g.drawString(placeholder, getInsets().left, pG.getFontMetrics().getMaxAscent() + 2*getInsets().top);
     }
 
     public void setPlaceholder(final String s) {
