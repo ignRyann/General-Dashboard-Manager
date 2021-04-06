@@ -29,6 +29,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private JMenu displayMenu;
     private JMenu tableHeadColourSubMenu;
     private JMenu textSizeSubMenu;
+    private JMenu textStyleSubMenu;
     private JMenu helpMenu;
 
     private JMenuItem clearDataFrameItem;
@@ -42,6 +43,11 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private JMenuItem redTableHeaderColourItem;
     private JMenuItem lightGrayTableHeaderColourItem;
     private JSlider textSizeSlider;
+    private int textStyle;
+    private ButtonGroup textStyleRadioButtonGroup;
+    private JRadioButtonMenuItem plainTextItem;
+    private JRadioButtonMenuItem italicTextItem;
+    private JRadioButtonMenuItem boldTextItem;
 
     // Variables for the dataSelectionPanel
     private JPanel dataSelectionPanel;
@@ -97,21 +103,14 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         fileMenu = new JMenu("File");
         displayMenu = new JMenu("Display Options");
         tableHeadColourSubMenu = new JMenu("Change Table Head Colour");
-        textSizeSubMenu = new JMenu("Change Font Size");
+        textSizeSubMenu = new JMenu("Change Text Size");
+        textStyleSubMenu = new JMenu("Change Text Style");
         helpMenu = new JMenu("Help");
 
         // Creates the menu items for 'File'
         clearDataFrameItem = new JMenuItem("Clear");
         loadDataFrameItem = new JMenuItem("Load");
         saveDataFrameItem = new JMenuItem("Save");
-
-        // Creates the Slider for 'Change Font Size'
-        textSizeSlider = new JSlider(8, 16, 12);
-        textSizeSlider.setPaintTicks(true);
-        textSizeSlider.setMajorTickSpacing(4);
-        textSizeSlider.setPaintLabels(true);
-        textSizeSlider.setOrientation(SwingConstants.VERTICAL);
-        textSizeSlider.addChangeListener(e -> dataFrameTable.setFont(new Font("Dialog", Font.PLAIN, textSizeSlider.getValue())));
 
         // Creates the Submenu items for 'Change Table Head Colour'
         yellowTableHeaderColourItem = new JMenuItem("Yellow");
@@ -121,6 +120,22 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         magentaTableHeaderColourItem = new JMenuItem("Magenta");
         redTableHeaderColourItem = new JMenuItem("Red");
         lightGrayTableHeaderColourItem = new JMenuItem("Light Gray");
+
+        // Creates the Slider for 'Change Text Size'
+        textSizeSlider = new JSlider(8, 16, 12);
+        textSizeSlider.setPaintTicks(true);
+        textSizeSlider.setMajorTickSpacing(4);
+        textSizeSlider.setPaintLabels(true);
+        textSizeSlider.setOrientation(SwingConstants.VERTICAL);
+        textStyle = 0;
+        textSizeSlider.addChangeListener(e -> dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue())));
+
+        // Creates the Submenu items for 'Change Text Style'
+        textStyleRadioButtonGroup = new ButtonGroup();
+        textStyleRadioButtonGroup.add(plainTextItem = new JRadioButtonMenuItem("Plain"));
+        plainTextItem.setSelected(true);
+        textStyleRadioButtonGroup.add(italicTextItem = new JRadioButtonMenuItem("Italic"));
+        textStyleRadioButtonGroup.add(boldTextItem = new JRadioButtonMenuItem("Bold"));
 
         // Adds the menu item's images to the menu option
         clearDataFrameItem.setIcon(new ImageIcon("img/clear.png"));
@@ -147,6 +162,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         redTableHeaderColourItem.addActionListener(this);
         lightGrayTableHeaderColourItem.addActionListener(this);
 
+        plainTextItem.addActionListener(this);
+        italicTextItem.addActionListener(this);
+        boldTextItem.addActionListener(this);
+
         // Shortcuts added for easier usability
         fileMenu.setMnemonic(KeyEvent.VK_F); // Keyboard shortcut : [Alt + f] or [Ctrl + Option + f] for File
         displayMenu.setMnemonic(KeyEvent.VK_D); // Keyboard shortcut : [Alt + d] or [Ctrl + Option + d] for Checklist
@@ -166,12 +185,16 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         tableHeadColourSubMenu.add(magentaTableHeaderColourItem);
         tableHeadColourSubMenu.add(redTableHeaderColourItem);
         tableHeadColourSubMenu.add(lightGrayTableHeaderColourItem);
+
         textSizeSubMenu.add(textSizeSlider);
+
+        textStyleSubMenu.add(plainTextItem);
+        textStyleSubMenu.add(italicTextItem);
+        textStyleSubMenu.add(boldTextItem);
 
         displayMenu.add(tableHeadColourSubMenu);
         displayMenu.add(textSizeSubMenu);
-
-
+        displayMenu.add(textStyleSubMenu);
 
         // Adds the menu headers to the menu bar
         menuBar.add(fileMenu);
@@ -455,6 +478,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private void resetDisplaySettings(){
         textSizeSlider.setValue(12);
         dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
+        plainTextItem.setSelected(true);
+        textStyle = 0;
+        dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
     }
 
     // Selects or Deselects all the checkboxes within dataSelectionPanel
@@ -510,6 +536,19 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         }
         else if (e.getSource() == lightGrayTableHeaderColourItem) {
             dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
+        }
+
+        if (e.getSource() == plainTextItem){
+            textStyle = 0;
+            dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
+        }
+        else if (e.getSource() == italicTextItem){
+            textStyle = 2;
+            dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
+        }
+        else if (e.getSource() == boldTextItem){
+            textStyle = 1;
+            dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
         }
 
 
