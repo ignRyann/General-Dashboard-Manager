@@ -36,7 +36,7 @@ public class JSONWriter {
     }
 
     // Adds the data from dataFrame to the file fileName
-    public void addDataToJSONFile(DataFrame dataFrame, String folderLocation, String fileName){
+    public void addDataToFile(DataFrame dataFrame, String folderLocation, String fileName){
         try {
             FileWriter myWriter = new FileWriter(folderLocation + "/" + fileName + ".json");
 
@@ -60,11 +60,13 @@ public class JSONWriter {
     }
 
     // Main body for saving the dataFrame as a .json file
-    public String createJSONFile(DataFrame dataFrame, String folderLocation, String fileName){
+    public String saveAsJSONFile(DataFrame dataFrame, String folderLocation, String fileName){
         if (fileNameValid(fileName)) {
             createFile(folderLocation, fileName);
             if (new File(folderLocation + "/" + fileName + ".json").isFile()) {
-                addDataToJSONFile(dataFrame, folderLocation, fileName);
+                addDataToFile(dataFrame, folderLocation, fileName);
+            }else{
+                message = "The file could not be created";
             }
         }else{
             message = "The file name must only contains letters and numbers";

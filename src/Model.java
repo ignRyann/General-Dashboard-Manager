@@ -67,7 +67,7 @@ public class Model {
         if (currentDataFrame.isEmpty()) {
             return "The DataFrame is currently empty";
         } else {
-            return new JSONWriter().createJSONFile(currentDataFrame, folderLocation, fileName);
+            return new JSONWriter().saveAsJSONFile(currentDataFrame, folderLocation, fileName);
         }
     }
 
