@@ -362,7 +362,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         {
             folderLocation = fc.getCurrentDirectory().getAbsolutePath();
 
-            // Saves the status message to display later
+            // Saves the status when saving the JSON File
             statusMessage = currentData.saveToJSONFile(folderLocation, fileName);
 
             // If the filename already exists, give the user the option to replace it
