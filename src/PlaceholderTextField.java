@@ -4,10 +4,6 @@ import java.awt.*;
 public class PlaceholderTextField extends JTextField {
     private String placeholder;
 
-    public PlaceholderTextField(){
-        placeholder = "";
-    }
-
     public PlaceholderTextField(String placeholderText){
         placeholder = placeholderText;
     }
@@ -24,10 +20,6 @@ public class PlaceholderTextField extends JTextField {
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g.setColor(getDisabledTextColor());
         g.drawString(placeholder, getInsets().left, pG.getFontMetrics().getMaxAscent() + 2*getInsets().top);
-    }
-
-    public void setPlaceholder(final String s) {
-        placeholder = s;
     }
 
 }
