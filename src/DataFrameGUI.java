@@ -61,6 +61,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Variables for searchBarPanel
     private JPanel searchBarPanel;
+    private JLabel currentFileLabel;
+    private String currentFileName;
     private JComboBox<String> searchColumnComboBox;
     private DefaultComboBoxModel<String> searchColumnComboBoxModel;
     private PlaceholderTextField searchBarTextField;
@@ -250,8 +252,11 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Creates the searchBarPanel
     private void createSearchBarPanel(){
-        searchBarPanel = new JPanel(new FlowLayout());
+        searchBarPanel = new JPanel(new GridLayout());
         searchBarPanel.setBorder(BorderFactory.createEtchedBorder());
+
+        // Creates the currentFileLabel
+        currentFileLabel = new JLabel("File Name: ");
 
         // Creates the searchColumnComboBox
         searchColumnComboBoxModel = new DefaultComboBoxModel<>(new String[]{"All"});
@@ -310,9 +315,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         });
 
         // Adds the components onto the searchBarPanel
-        searchBarPanel.add(searchColumnComboBox, BorderLayout.CENTER);
-        searchBarPanel.add(searchBarTextField, BorderLayout.CENTER);
-        searchBarPanel.add(searchBarMatchesLabel, BorderLayout.EAST);
+        searchBarPanel.add(currentFileLabel);
+        searchBarPanel.add(searchColumnComboBox);
+        searchBarPanel.add(searchBarTextField);
+        searchBarPanel.add(searchBarMatchesLabel);
     }
 
     // Creates the backPanel and adds each of the components to it
@@ -344,10 +350,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
             File file = fc.getSelectedFile();
-            String fileName = file.getName();
+            currentFileName = file.getName();
 
             try {
-                if ( fileName.endsWith(".csv") || fileName.endsWith(".json")){
+                if ( currentFileName.endsWith(".csv") || currentFileName.endsWith(".json")){
                     currentData.loadDataFrame(file.getAbsolutePath());
                     dataFrameTable.setModel(currentData.getTable());
                     dataFrameTable.setAutoCreateRowSorter(true);
@@ -453,12 +459,14 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Updates the searchBarPanel
     private void updateSearchBarPanel(Boolean dataLoadedIn){
+        currentFileLabel.setText("File Name: ");
         searchColumnComboBoxModel.removeAllElements();
         searchColumnComboBoxModel.addElement("All");
         searchBarTextField.setText("");
 
         // if data is loaded in the Dashboard Manager, add the column names that are displayed in the table
         if (dataLoadedIn) {
+            currentFileLabel.setText("File Name: " + currentFileName);
             for (String column : currentData.getShownColumnNames()) {
                 searchColumnComboBoxModel.addElement(column);
             }
@@ -476,6 +484,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     }
 
+    // Resets the display options back to the original settings
     private void resetDisplaySettings(){
         textSizeSlider.setValue(12);
         dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
