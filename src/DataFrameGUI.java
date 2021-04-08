@@ -379,11 +379,12 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         getFileName();
 
         // Lets the user choose which folder to save the file in
-        JFileChooser fc = new JFileChooser("./DataSet/");
+        JFileChooser fc = new JFileChooser(".");
         fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION)
         {
-            folderLocation = fc.getCurrentDirectory().getAbsolutePath();
+            folderLocation = fc.getSelectedFile().getAbsolutePath();
 
             // Saves the status when saving the JSON File
             statusMessage = currentData.saveToJSONFile(folderLocation, fileName);
