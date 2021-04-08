@@ -59,7 +59,7 @@ public class DataLoader{
             while (((row = csvReader.readLine()) != null)){
                 if ( !((row.equals("{")) || (row.equals("}"))) ){
                     // Makes it such that the row contains only the data itself separated by commas
-                    row = row.replaceAll(" :", ",").replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", "").replaceAll("\t", "");
+                    row = row.replaceAll("\",", "").replaceAll(" :", ",").replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", "").replaceAll("\t", "");
                     String[] columnData = row.split(", ");
                     jsonData.add(new ArrayList<>(Arrays.asList(columnData)));
                 }
