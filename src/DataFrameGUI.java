@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.PatternSyntaxException;
 
@@ -27,6 +28,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     private JMenu fileMenu;
     private JMenu displayMenu;
+    private JMenu frequencyChartSubmenu;
+    private JMenu visualMenu;
     private JMenu tableHeadColourSubMenu;
     private JMenu textSizeSubMenu;
     private JMenu textStyleSubMenu;
@@ -54,8 +57,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private JButton showAllColumnsButton;
     private JButton hideAllColumnsButton;
 
-    // Variables for the displayDataPanel
+    // Variables for the displayDataTabbedPane
     private JTabbedPane displayDataTabbedPane;
+    private ArrayList<String> shownTabs;
     private JScrollPane scrollableDataFrameTable;
     private JTable dataFrameTable;
 
@@ -101,7 +105,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
         // Creates the menu headers
         fileMenu = new JMenu("File");
-        displayMenu = new JMenu("Display Options");
+        displayMenu = new JMenu("Display Graphs");
+        frequencyChartSubmenu = new JMenu("Show Frequency Chart Data");
+        visualMenu = new JMenu("Visual Settings");
         tableHeadColourSubMenu = new JMenu("Change Table Head Colour");
         textSizeSubMenu = new JMenu("Change Font Size");
         textStyleSubMenu = new JMenu("Change Text Style");
@@ -168,7 +174,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
         // Shortcuts added for easier usability
         fileMenu.setMnemonic(KeyEvent.VK_F); // Keyboard shortcut : [Alt + f] or [Ctrl + Option + f] for File
-        displayMenu.setMnemonic(KeyEvent.VK_D); // Keyboard shortcut : [Alt + d] or [Ctrl + Option + d] for Checklist
+        visualMenu.setMnemonic(KeyEvent.VK_D); // Keyboard shortcut : [Alt + d] or [Ctrl + Option + d] for Checklist
         clearDataFrameItem.setMnemonic(KeyEvent.VK_C); // Keyboard shortcut : [c] for Clear
         loadDataFrameItem.setMnemonic(KeyEvent.VK_L); // Keyboard shortcut : [l] for Load
         saveDataFrameItem.setMnemonic(KeyEvent.VK_S); // Keyboard shortcut : [s] for Save
@@ -177,6 +183,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         fileMenu.add(clearDataFrameItem);
         fileMenu.add(loadDataFrameItem);
         fileMenu.add(saveDataFrameItem);
+
+        displayMenu.add(frequencyChartSubmenu);
 
         tableHeadColourSubMenu.add(yellowTableHeaderColourItem);
         tableHeadColourSubMenu.add(orangeTableHeaderColourItem);
@@ -192,9 +200,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         textStyleSubMenu.add(italicTextItem);
         textStyleSubMenu.add(boldTextItem);
 
-        displayMenu.add(tableHeadColourSubMenu);
-        displayMenu.add(textSizeSubMenu);
-        displayMenu.add(textStyleSubMenu);
+        visualMenu.add(tableHeadColourSubMenu);
+        visualMenu.add(textSizeSubMenu);
+        visualMenu.add(textStyleSubMenu);
 
         // Adds the menu headers to the menu bar
         menuBar.add(fileMenu);
@@ -213,6 +221,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     // Creates the displayDataPanel
     private void createDisplayDataTabbedPane(){
         displayDataTabbedPane = new JTabbedPane();
+        shownTabs = new ArrayList<>();
         displayDataTabbedPane.setPreferredSize(new Dimension(1400, 750));
 
         // Creates a new JTable
@@ -243,6 +252,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         // Adds it onto a scrollable component and then adds it to the Tabbed Pane to be shown
         scrollableDataFrameTable = new JScrollPane(dataFrameTable);
         displayDataTabbedPane.add("", scrollableDataFrameTable);
+        shownTabs.add("");
+
     }
 
     // Creates the searchBarPanel
@@ -329,7 +340,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         currentData.emptyDataFrame();
         dataFrameTable.setModel(currentData.getTable());
 
-        displayDataTabbedPane.setTitleAt(0, "");
+        resetTabs();
         resetDisplaySettings();
         updateMenuBar(false);
         updateDataSelectionPanel();
@@ -350,7 +361,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                     dataFrameTable.setModel(currentData.getTable());
                     dataFrameTable.setAutoCreateRowSorter(true);
 
+                    resetTabs();
                     displayDataTabbedPane.setTitleAt(0, fileName);
+                    shownTabs.set(0, fileName);
+
                     updateMenuBar(true);
                     updateDataSelectionPanel();
                     updateSearchBarPanel(true);
@@ -470,10 +484,19 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         menuBar.removeAll();
         menuBar.add(fileMenu);
         if (dataLoadedIn){
+            frequencyChartSubmenu.removeAll();
+            for (String columnName : currentData.getColumnNames()){
+                JCheckBoxMenuItem checkBoxMenuItem = new JCheckBoxMenuItem(columnName);
+                checkBoxMenuItem.addActionListener(
+                        e -> showTab(checkBoxMenuItem.getText(), checkBoxMenuItem.getState())
+                );
+                frequencyChartSubmenu.add(checkBoxMenuItem);
+            }
+
             menuBar.add(displayMenu);
+            menuBar.add(visualMenu);
         }
         menuBar.add(helpMenu);
-
     }
 
     private void resetDisplaySettings(){
@@ -482,6 +505,15 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         plainTextItem.setSelected(true);
         textStyle = 0;
         dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
+    }
+
+    private void resetTabs(){
+        for (int i = displayDataTabbedPane.getTabCount()-1; 0 < i; i--){
+            displayDataTabbedPane.removeTabAt(i);
+            shownTabs.remove(i);
+        }
+        shownTabs.set(0, "");
+        displayDataTabbedPane.setTitleAt(0, "");
     }
 
     // Selects or Deselects all the checkboxes within dataSelectionPanel
@@ -495,6 +527,19 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             }
         }
 
+    }
+
+    private void showTab(String columnName, Boolean state){
+        if(state){
+            displayDataTabbedPane.addTab(columnName, currentData.getFrequencyDataCharts(columnName));
+            shownTabs.add(columnName);
+            displayDataTabbedPane.setSelectedIndex(shownTabs.indexOf(columnName));
+        }
+        else{
+            int index = shownTabs.indexOf(columnName);
+            displayDataTabbedPane.removeTabAt(index);
+            shownTabs.remove(index);
+        }
     }
 
     @Override

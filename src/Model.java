@@ -1,5 +1,9 @@
+import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.util.ArrayList;
+import java.awt.*;
+import java.util.*;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class Model {
 
@@ -73,6 +77,68 @@ public class Model {
 
     public Boolean isEmpty(){
         return currentDataFrame.isEmpty();
+    }
+
+    private static Map<String, Integer> sortByValue(Map<String, Integer> unsortedMap)
+    {
+        List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortedMap.entrySet());
+
+        // Sorting the list based on values
+        list.sort((o1, o2) -> o2.getValue().compareTo(o1.getValue()) == 0
+                ? o2.getKey().compareTo(o1.getKey())
+                : o2.getValue().compareTo(o1.getValue()));
+        return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
+
+    }
+
+    private Map<String, Integer> getFrequencyTableData(String columnName){
+        Map<String, Integer> frequencyTableData = new HashMap<>();
+
+        for (String value : currentDataFrame.getColumnValues(columnName)) {
+            if (frequencyTableData.containsKey(value)) {
+                frequencyTableData.put(value, frequencyTableData.get(value) + 1);
+            } else {
+                frequencyTableData.put(value, 1);
+            }
+        }
+
+        frequencyTableData = sortByValue(frequencyTableData);
+        return frequencyTableData;
+    }
+
+    // Gets the Frequency Table Bar Chart
+    public JPanel getFrequencyDataCharts(String columnName){
+        JPanel frequencyDataChart = new JPanel(new GridLayout(2, 1));
+
+        JTable frequencyTable = new JTable(){
+            @Override
+            // Makes it so the every cell is uneditable
+            public boolean isCellEditable(int row, int column){
+                return false;
+            }
+        };
+        DefaultTableModel frequencyTableModel = new DefaultTableModel(0, 0);
+        frequencyTableModel.setColumnIdentifiers(new String[]{"Values", "Frequency"});
+
+        getFrequencyTableData(columnName).forEach((k,v) -> {
+            if (!k.equals("")){
+                frequencyTableModel.addRow(new String[]{k, String.valueOf(v)});
+            }else{
+                frequencyTableModel.addRow(new String[]{"Null", String.valueOf(v)});
+            }
+        });
+
+        frequencyTable.setModel(frequencyTableModel);
+        frequencyTable.getColumnModel().setColumnMargin(20);
+        frequencyTable.getTableHeader().setResizingAllowed(false);
+        frequencyTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
+
+
+        BarChartPanel barChartPanel = new BarChartPanel(getFrequencyTableData(columnName), currentDataFrame.getColumnValues(columnName).length, columnName + "'s");
+        frequencyDataChart.add(barChartPanel);
+        frequencyDataChart.add(new JScrollPane(frequencyTable));
+        return frequencyDataChart;
+
     }
 
 }
