@@ -60,6 +60,10 @@ public class DataLoader{
                 if ( !((row.equals("{")) || (row.equals("}"))) ){
                     // Makes it such that the row contains only the data itself separated by commas
                     row = row.replaceAll("\",", "").replaceAll(" :", ",").replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", "").replaceAll("\t", "");
+                    // So that we can register null values when creating the frequency data graphs
+                    row = row.replaceAll(", ,", ",  ,");
+                    row = row.replaceAll(", ,", ",  ,");
+
                     String[] columnData = row.split(", ");
                     jsonData.add(new ArrayList<>(Arrays.asList(columnData)));
                 }

@@ -3,6 +3,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class Model {
@@ -112,6 +113,7 @@ public class Model {
     // Gets the Frequency Table Bar Chart Panel
     public JPanel getFrequencyDataChartsPanel(String columnName){
         JPanel frequencyDataChart = new JPanel(new GridLayout(2, 1));
+        Map<String, Integer> frequencyData = getFrequencyTableData(columnName);
 
         JTable frequencyTable = new JTable(){
             @Override
@@ -123,14 +125,17 @@ public class Model {
 
         // Loads the Frequency Data into the JTable
         DefaultTableModel frequencyTableModel = new DefaultTableModel(0, 0);
-        frequencyTableModel.setColumnIdentifiers(new String[]{"Value", "Frequency"});
+        frequencyTableModel.setColumnIdentifiers(new String[]{""," Value", "Frequency"});
 
-        getFrequencyTableData(columnName).forEach((k,v) -> {
-            if (!k.equals("")){
-                frequencyTableModel.addRow(new String[]{k, String.valueOf(v)});
-            }else{
-                frequencyTableModel.addRow(new String[]{"Null", String.valueOf(v)});
+        AtomicInteger counter = new AtomicInteger(1);
+        frequencyData.forEach((k,v) -> {
+            if (k.isBlank()){
+                frequencyTableModel.addRow(new String[]{String.valueOf(counter.get()), "Null", String.valueOf(v)});
             }
+            else{
+                frequencyTableModel.addRow(new String[]{String.valueOf(counter.get()), k, String.valueOf(v)});
+            }
+            counter.getAndIncrement();
         });
 
         frequencyTable.setModel(frequencyTableModel);
@@ -142,7 +147,7 @@ public class Model {
 
 
         // Adding both graphs onto the same panel
-        BarChartPanel barChartPanel = new BarChartPanel(getFrequencyTableData(columnName), columnName + "'s");
+        BarChartPanel barChartPanel = new BarChartPanel(frequencyData, columnName + "'s");
         frequencyDataChart.add(new JScrollPane(barChartPanel));
         frequencyDataChart.add(new JScrollPane(frequencyTable));
 

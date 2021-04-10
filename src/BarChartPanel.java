@@ -15,7 +15,6 @@ public class BarChartPanel extends JPanel {
     // Stores dimension values
     private int chartWidth;
     private int chartHeight;
-    private int chartX;
     private int chartY;
 
     // Stores the x-axis label to show on the graph
@@ -29,8 +28,8 @@ public class BarChartPanel extends JPanel {
         setBackground(Color.white);
 
         // Makes the Panel larger if the bar chart is not able to be fully displayed
-        if ((chartWidth / data.size() < 5)) {
-            setPreferredSize(new Dimension(5*data.size() + 50, getHeight()));
+        if ((chartWidth / frequencyTableData.size() < 5)) {
+            setPreferredSize(new Dimension(5*frequencyTableData.size() + 50, getHeight()));
         }
 
     }
@@ -51,7 +50,6 @@ public class BarChartPanel extends JPanel {
         chartHeight = this.getHeight() - 2*AXIS_OFFSET - TOP_BUFFER;
 
         // Get's the chart's coords for the origin
-        chartX = AXIS_OFFSET;
         chartY = this.getHeight() - AXIS_OFFSET;
     }
 
@@ -99,7 +97,7 @@ public class BarChartPanel extends JPanel {
     // Draws x-axis and y-axis labels
     private void drawLabels(Graphics2D g2) {
         // Draws the x-axis label
-        g2.drawString(xLabel, chartX + chartWidth /2, chartY + AXIS_OFFSET/2 +3) ;
+        g2.drawString(xLabel, AXIS_OFFSET + 100, chartY + AXIS_OFFSET/2 +3) ;
 
         // Saving the original font settings to revert back to it
         Font original = g2.getFont();

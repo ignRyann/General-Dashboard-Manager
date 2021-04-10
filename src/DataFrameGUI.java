@@ -327,6 +327,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         // Empties the DataFrame and updates the table and checklist Panel
         currentData.emptyDataFrame();
         dataFrameTable.setModel(currentData.getTable());
+        fileName = "";
 
         updateTabs(false);
         resetVisualSettings();
