@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class PlaceholderTextField extends JTextField {
-    private String placeholder;
+    private final String placeholder;
 
     public PlaceholderTextField(String placeholderText){
         placeholder = placeholderText;

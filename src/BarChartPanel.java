@@ -24,7 +24,6 @@ public class BarChartPanel extends JPanel {
         super();
         data = frequencyTableData;
         xLabel = columnName;
-
         setBackground(Color.white);
 
         // Makes the Panel larger if the bar chart is not able to be fully displayed

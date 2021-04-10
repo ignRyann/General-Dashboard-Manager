@@ -213,6 +213,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     // Creates the displayDataPanel
     private void createDisplayDataTabbedPane(){
         displayDataTabbedPane = new JTabbedPane();
+        displayDataTabbedPane.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         displayDataTabbedPane.setPreferredSize(new Dimension(1400, 750));
 
         // Creates a new JTable
@@ -492,7 +493,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         displayDataTabbedPane.setTitleAt(0, "");
         if(dataLoadedIn) {
             for (String columnName : currentData.getColumnNames()){
-                displayDataTabbedPane.addTab(columnName, currentData.getFrequencyDataChartsPanel(columnName));
+                JPanel frequencyDataChartPanel = currentData.getFrequencyDataChartsPanel(columnName);
+                displayDataTabbedPane.addTab(columnName, frequencyDataChartPanel);
             }
         }
     }
