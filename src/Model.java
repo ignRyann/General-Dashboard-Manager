@@ -66,6 +66,7 @@ public class Model {
         return dataFrameTableModel;
     }
 
+    // Saves the current DataFrame as a JSON File as fileName at folderLocation
     public String saveToJSONFile(String folderLocation, String fileName){
         if (currentDataFrame.isEmpty()) {
             return "The DataFrame is currently empty";
@@ -74,10 +75,12 @@ public class Model {
         }
     }
 
+    // True if the DataFrame is empty, otherwise false
     public Boolean isEmpty(){
         return currentDataFrame.isEmpty();
     }
 
+    // Takes in an unsorted HashMap and returns the sorted HashMap
     private static Map<String, Integer> sortByValue(Map<String, Integer> unsortedMap)
     {
         List<Map.Entry<String, Integer>> list = new LinkedList<>(unsortedMap.entrySet());
@@ -89,6 +92,8 @@ public class Model {
         return list.stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (a, b) -> b, LinkedHashMap::new));
     }
 
+    // Returns a sorted Hashmap of the integer values in descending order
+    // The HashMap contains the frequency table data with the String being the Value and the Integer being the frequency
     private Map<String, Integer> getFrequencyTableData(String columnName){
         Map<String, Integer> frequencyTableData = new HashMap<>();
 
@@ -104,7 +109,7 @@ public class Model {
         return frequencyTableData;
     }
 
-    // Gets the Frequency Table Bar Chart
+    // Gets the Frequency Table Bar Chart Panel
     public JPanel getFrequencyDataChartsPanel(String columnName){
         JPanel frequencyDataChart = new JPanel(new GridLayout(2, 1));
 

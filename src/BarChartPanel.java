@@ -78,6 +78,7 @@ public class BarChartPanel extends JPanel {
         int yTopLeftCord;
         int counter = 0;
         g2.setColor(Color.black);
+
         // Draws the bar for every key in the hashmap
         for (String bar : data.keySet()) {
             value = data.get(bar);

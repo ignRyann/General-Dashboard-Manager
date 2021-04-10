@@ -329,7 +329,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         dataFrameTable.setModel(currentData.getTable());
 
         updateTabs(false);
-        resetDisplaySettings();
+        resetVisualSettings();
         updateMenuBar(false);
         updateDataSelectionPanel();
         updateSearchBarPanel(false);
@@ -474,7 +474,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         menuBar.add(helpMenu);
     }
 
-    private void resetDisplaySettings(){
+    // Resets all the visual settings back to default
+    private void resetVisualSettings(){
         textSizeSlider.setValue(12);
         dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
         plainTextItem.setSelected(true);
@@ -482,6 +483,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
     }
 
+    // Updates JTabbedPane depending if data is loaded in and adds the relevant tabs
     private void updateTabs(Boolean dataLoadedIn){
         for (int i = displayDataTabbedPane.getTabCount() - 1; 0 < i; i--) {
             displayDataTabbedPane.removeTabAt(i);
@@ -548,6 +550,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
         }
 
+        // If the user wishes to change the style of writing
         if (e.getSource() == plainTextItem){
             textStyle = 0;
             dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
