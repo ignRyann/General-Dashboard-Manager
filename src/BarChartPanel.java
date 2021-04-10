@@ -23,12 +23,12 @@ public class BarChartPanel extends JPanel {
 
     public BarChartPanel(Map<String, Integer> frequencyTableData, String columnName){
         super();
-        setBackground(Color.white);
         data = frequencyTableData;
         xLabel = columnName;
 
-        if (((getWidth() - AXIS_OFFSET) / data.keySet().size()) < 5) {
-            setPreferredSize(new Dimension(5*data.keySet().size() + 50, getHeight()));
+        setBackground(Color.white);
+        if ((chartWidth / data.size() < 5)) {
+            setPreferredSize(new Dimension(5*data.size() + 50, getHeight()));
         }
 
     }
@@ -55,7 +55,7 @@ public class BarChartPanel extends JPanel {
 
     // Draws the Bar Chart depending on the values and its frequency stored within data
     public void drawBars(Graphics2D g2) {
-        int numberOfBars = data.keySet().size();
+        int numberOfBars = data.size();
         double maxHeight = 0;
 
         // Finds the height of the highest bar
