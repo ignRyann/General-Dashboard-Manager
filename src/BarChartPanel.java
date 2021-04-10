@@ -9,109 +9,107 @@ public class BarChartPanel extends JPanel {
     public static final int TOP_BUFFER = 30;
     public static final int AXIS_OFFSET = 20;
 
+    // Hashmap datatype holds the frequency of the String within the columnValues
     private final Map<String, Integer> data;
 
-    private int chartWidth, chartHeight, chartX, chartY;
+    // Stores dimension values
+    private int chartWidth;
+    private int chartHeight;
+    private int chartX;
+    private int chartY;
 
+    // Stores the x-axis label to show on the graph
     private final String xLabel;
 
-    public BarChartPanel(Map<String, Integer> frequencyTableData, String xl){
+    public BarChartPanel(Map<String, Integer> frequencyTableData, String columnName){
         super();
-        this.data = frequencyTableData;
-
-        xLabel = xl;
+        data = frequencyTableData;
+        xLabel = columnName;
 
     }
 
     public void paintComponent(Graphics g) {
-        computeSize();
-
         Graphics2D g2 = (Graphics2D) g;
+
+        computeSize();
         drawBars(g2);
-        drawAxes(g2);
-        drawText(g2);
+        drawLabels(g2);
+        drawChartInfo(g2);
     }
 
+    // Retrieves the size of panel
     private void computeSize() {
+        // Gets the chart's area size
+        chartWidth = this.getWidth() - 2*AXIS_OFFSET;
+        chartHeight = this.getHeight() - 2*AXIS_OFFSET - TOP_BUFFER;
 
-        int width = this.getWidth();
-        int height = this.getHeight();
-
-        // chart area size
-        chartWidth = width - 2*AXIS_OFFSET;
-        chartHeight = height - 2*AXIS_OFFSET - TOP_BUFFER;
-
-        // Chart origin coords
+        // Get's the chart's coords for the origin
         chartX = AXIS_OFFSET;
-        chartY = height - AXIS_OFFSET;
-
+        chartY = this.getHeight() - AXIS_OFFSET;
     }
 
+    // Draws the Bar Chart depending on the values and its frequency stored within data
     public void drawBars(Graphics2D g2) {
+        int numberOfBars = data.keySet().size();
+        double maxHeight = 0;
 
-        Color original = g2.getColor();
-
-        double numBars = data.keySet().size();
-        double max = 0.;
-
-        for (Integer wrapper : data.values()) {
-            if (max < wrapper)
-                max = wrapper;
+        // Finds the height of the highest bar
+        for (Integer freq : data.values()) {
+            if (maxHeight < freq)
+                maxHeight = freq;
         }
-        int barWidth = (int) (chartWidth /numBars);
 
-        int value, height, xLeft, yTopLeft;
+        // Calculates width of bar
+        int barWidth = chartWidth / numberOfBars;
+
+        int value;
+        int barHeight;
+        int xLeftCord;
+        int yTopLeftCord;
         int counter = 0;
-
+        g2.setColor(Color.black);
+        // Draws the bar for every key in the hashmap
         for (String bar : data.keySet()) {
             value = data.get(bar);
 
-            double height2 = (value/max)* chartHeight;
-            height = (int) height2;
+            double barHeightDecimal = (value/maxHeight)* chartHeight;
+            barHeight = (int) barHeightDecimal;
 
-            xLeft = AXIS_OFFSET + counter * barWidth;
-            yTopLeft = chartY - height;
-            Rectangle rec = new Rectangle(xLeft, yTopLeft, barWidth, height);
+            xLeftCord = AXIS_OFFSET + counter * barWidth;
+            yTopLeftCord = chartY - barHeight;
+            Rectangle rec = new Rectangle(xLeftCord, yTopLeftCord, barWidth, barHeight);
 
             g2.draw(rec);
 
             counter++;
         }
-
-        g2.setColor(original);
     }
 
-    private void drawAxes(Graphics2D g2) {
-        int rightX = chartX + chartWidth;
-        int topY = chartY - chartHeight;
-
-        g2.drawLine(chartX, chartY, rightX, chartY);
-
-        g2.drawLine(chartX, chartY, chartX, topY);
-
+    // Draws x-axis and y-axis labels
+    private void drawLabels(Graphics2D g2) {
+        // Draws the x-axis label
         g2.drawString(xLabel, chartX + chartWidth /2, chartY + AXIS_OFFSET/2 +3) ;
 
-        // draw vertical string
-
+        // Saving the original font settings to revert back to it
         Font original = g2.getFont();
 
+        // Change font settings to write vertically
         Font font = new Font(null, original.getStyle(), original.getSize());
         AffineTransform affineTransform = new AffineTransform();
         affineTransform.rotate(Math.toRadians(-90), 0, 0);
         Font rotatedFont = font.deriveFont(affineTransform);
         g2.setFont(rotatedFont);
-        String yLabel = "Frequency Count";
-        g2.drawString(yLabel,AXIS_OFFSET/2+3, chartY - chartHeight/4);
+
+        // Draws the y-axis label
+        g2.drawString("Frequency",AXIS_OFFSET/2+3, chartY - chartHeight/4);
+        // Revert back to original font settings
         g2.setFont(original);
-
-
     }
 
-    private void drawText(Graphics2D g2) {
+    // Draws chart information
+    private void drawChartInfo(Graphics2D g2) {
         int size = data.keySet().size();
-
-        g2.drawString("Number of Bars: " + size, AXIS_OFFSET +10, 15);
+        g2.drawString("Number of Unique Values: " + size, AXIS_OFFSET +10, 15);
     }
-
 
 }
