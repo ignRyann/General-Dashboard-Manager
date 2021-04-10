@@ -134,7 +134,7 @@ public class Model {
         frequencyTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
 
 
-        BarChartPanel barChartPanel = new BarChartPanel(getFrequencyTableData(columnName), currentDataFrame.getColumnValues(columnName).length, columnName + "'s");
+        BarChartPanel barChartPanel = new BarChartPanel(getFrequencyTableData(columnName), columnName + "'s");
         frequencyDataChart.add(barChartPanel);
         frequencyDataChart.add(new JScrollPane(frequencyTable));
         return frequencyDataChart;

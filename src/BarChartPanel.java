@@ -5,27 +5,25 @@ import java.util.Map;
 
 public class BarChartPanel extends JPanel {
 
-    public static final int TOP_BUFFER = 30; // where additional text is drawn
+    // Space to draw Chart Information
+    public static final int TOP_BUFFER = 30;
     public static final int AXIS_OFFSET = 20;
 
     private final Map<String, Integer> data;
-    private final int listSize;
 
     private int chartWidth, chartHeight, chartX, chartY;
 
     private final String xLabel;
 
-    public BarChartPanel(Map<String, Integer> frequencyTableData, int listSize, String xl) {
+    public BarChartPanel(Map<String, Integer> frequencyTableData, String xl){
         super();
         this.data = frequencyTableData;
-        this.listSize = listSize;
 
         xLabel = xl;
 
     }
 
     public void paintComponent(Graphics g) {
-
         computeSize();
 
         Graphics2D g2 = (Graphics2D) g;
@@ -113,7 +111,6 @@ public class BarChartPanel extends JPanel {
         int size = data.keySet().size();
 
         g2.drawString("Number of Bars: " + size, AXIS_OFFSET +10, 15);
-        g2.drawString("Number of Entries: " + listSize, AXIS_OFFSET +10, 30);
     }
 
 
