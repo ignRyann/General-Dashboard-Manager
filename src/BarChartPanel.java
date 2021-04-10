@@ -23,8 +23,13 @@ public class BarChartPanel extends JPanel {
 
     public BarChartPanel(Map<String, Integer> frequencyTableData, String columnName){
         super();
+        setBackground(Color.white);
         data = frequencyTableData;
         xLabel = columnName;
+
+        if (((getWidth() - AXIS_OFFSET) / data.keySet().size()) < 5) {
+            setPreferredSize(new Dimension(5*data.keySet().size() + 50, getHeight()));
+        }
 
     }
 
@@ -40,7 +45,7 @@ public class BarChartPanel extends JPanel {
     // Retrieves the size of panel
     private void computeSize() {
         // Gets the chart's area size
-        chartWidth = this.getWidth() - 2*AXIS_OFFSET;
+        chartWidth = this.getWidth() - AXIS_OFFSET;
         chartHeight = this.getHeight() - 2*AXIS_OFFSET - TOP_BUFFER;
 
         // Get's the chart's coords for the origin
@@ -61,6 +66,9 @@ public class BarChartPanel extends JPanel {
 
         // Calculates width of bar
         int barWidth = chartWidth / numberOfBars;
+        if ((chartWidth / numberOfBars) < 5){
+            barWidth = 5;
+        }
 
         int value;
         int barHeight;
@@ -111,5 +119,7 @@ public class BarChartPanel extends JPanel {
         int size = data.keySet().size();
         g2.drawString("Number of Unique Values: " + size, AXIS_OFFSET +10, 15);
     }
+
+
 
 }

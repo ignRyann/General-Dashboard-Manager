@@ -138,7 +138,7 @@ public class Model {
 
         // Adding both graphs onto the same panel
         BarChartPanel barChartPanel = new BarChartPanel(getFrequencyTableData(columnName), columnName + "'s");
-        frequencyDataChart.add(barChartPanel);
+        frequencyDataChart.add(new JScrollPane(barChartPanel));
         frequencyDataChart.add(new JScrollPane(frequencyTable));
 
         return frequencyDataChart;
