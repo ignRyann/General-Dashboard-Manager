@@ -27,6 +27,8 @@ public class BarChartPanel extends JPanel {
         xLabel = columnName;
 
         setBackground(Color.white);
+
+        // Makes the Panel larger if the bar chart is not able to be fully displayed
         if ((chartWidth / data.size() < 5)) {
             setPreferredSize(new Dimension(5*data.size() + 50, getHeight()));
         }
@@ -45,7 +47,7 @@ public class BarChartPanel extends JPanel {
     // Retrieves the size of panel
     private void computeSize() {
         // Gets the chart's area size
-        chartWidth = this.getWidth() - AXIS_OFFSET;
+        chartWidth = this.getWidth() - 2*AXIS_OFFSET;
         chartHeight = this.getHeight() - 2*AXIS_OFFSET - TOP_BUFFER;
 
         // Get's the chart's coords for the origin
