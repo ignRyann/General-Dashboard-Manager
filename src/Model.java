@@ -149,7 +149,6 @@ public class Model {
         frequencyTable.getTableHeader().setResizingAllowed(false);
         frequencyTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
 
-
         // Adding both graphs onto the same panel
         BarChartPanel barChartPanel = new BarChartPanel(frequencyData, columnName + "'s");
         frequencyDataChart.add(new JScrollPane(barChartPanel));

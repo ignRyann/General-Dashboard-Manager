@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 import java.util.regex.PatternSyntaxException;
 
@@ -48,6 +49,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private JRadioButtonMenuItem plainTextItem;
     private JRadioButtonMenuItem italicTextItem;
     private JRadioButtonMenuItem boldTextItem;
+    private JMenuItem gitHubLink;
 
     // Variables for the dataSelectionPanel
     private JPanel dataSelectionPanel;
@@ -72,7 +74,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private String fileName;
     private String statusMessage;
     private JCheckBox overwriteFileCheckBox;
-    private final ImageIcon message = new ImageIcon("img/message.png");
+    private final ImageIcon messageIcon = new ImageIcon("img/message.png");
 
     // Main body for the DataFrameGUI
     public DataFrameGUI(){
@@ -82,7 +84,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         setMinimumSize(new Dimension(1000, 400 ));
         setLocationRelativeTo(null);
         setVisible(true);
-        JOptionPane.showMessageDialog(this, "Go to 'File' and then 'Load' to open a file!", null, JOptionPane.INFORMATION_MESSAGE, message);
+        JOptionPane.showMessageDialog(this, "Go to 'File' and then 'Load' to open a file!", null, JOptionPane.INFORMATION_MESSAGE, messageIcon);
     }
 
     // Creates the individual components and adds them together
@@ -142,6 +144,9 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         textStyleRadioButtonGroup.add(boldTextItem = new JRadioButtonMenuItem("Bold"));
         plainTextItem.setSelected(true);
 
+        // Creates the menu item for 'Help'
+        gitHubLink = new JMenuItem("GitHub ReadMe File");
+
         // Adds the menu item's images to the menu option
         clearDataFrameItem.setIcon(new ImageIcon("img/clear.png"));
         loadDataFrameItem.setIcon(new ImageIcon("img/load.png"));
@@ -171,6 +176,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         italicTextItem.addActionListener(this);
         boldTextItem.addActionListener(this);
 
+        gitHubLink.addActionListener(this);
+
         // Shortcuts added for easier usability
         fileMenu.setMnemonic(KeyEvent.VK_F); // Keyboard shortcut : [Alt + f] or [Ctrl + Option + f] for File
         visualMenu.setMnemonic(KeyEvent.VK_V); // Keyboard shortcut : [Alt + d] or [Ctrl + Option + d] for Visual Settings
@@ -178,6 +185,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         clearDataFrameItem.setMnemonic(KeyEvent.VK_C); // Keyboard shortcut : [c] for Clear
         loadDataFrameItem.setMnemonic(KeyEvent.VK_L); // Keyboard shortcut : [l] for Load
         saveDataFrameItem.setMnemonic(KeyEvent.VK_S); // Keyboard shortcut : [s] for Save
+        gitHubLink.setMnemonic(KeyEvent.VK_G); // Keyboard Shortcut : [g] for Github Link
 
         // Adds the menu item's to the menu headers
         fileMenu.add(clearDataFrameItem);
@@ -202,6 +210,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         visualMenu.add(textSizeSubMenu);
         visualMenu.add(textStyleSubMenu);
 
+        helpMenu.add(gitHubLink);
+
         // Adds the menu headers to the menu bar
         menuBar.add(fileMenu);
         menuBar.add(helpMenu);
@@ -213,7 +223,6 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         dataSelectionPanel = new JPanel();
         dataSelectionPanel.setPreferredSize(new Dimension(200, 750));
         dataSelectionPanel.setBorder(BorderFactory.createEtchedBorder());
-
     }
 
     // Creates the displayDataPanel
@@ -360,10 +369,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                     updateDataSelectionPanel();
                     updateSearchBarPanel(true);
                 }else {
-                    JOptionPane.showMessageDialog(this,"The selected file is not supported.", null, JOptionPane.INFORMATION_MESSAGE, message);
+                    JOptionPane.showMessageDialog(this,"The selected file is not supported.", null, JOptionPane.INFORMATION_MESSAGE, messageIcon);
                 }
             }catch (StringIndexOutOfBoundsException e){
-                JOptionPane.showMessageDialog(this, "The selected file does not exit. Please choose a valid file", null, JOptionPane.INFORMATION_MESSAGE, message);
+                JOptionPane.showMessageDialog(this, "The selected file does not exit. Please choose a valid file", null, JOptionPane.INFORMATION_MESSAGE, messageIcon);
             }
         }
     }
@@ -372,7 +381,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private void getFileName(){
         fileNameTextField = new JTextField();
         Object[] msgContent = {"Please enter the name of the file you wish to save the file as: ", fileNameTextField};
-        JOptionPane.showConfirmDialog(this,  msgContent,  "Save File", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, message);
+        JOptionPane.showConfirmDialog(this,  msgContent,  "Save File", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, messageIcon);
 
         fileName = fileNameTextField.getText();
     }
@@ -397,20 +406,20 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             if (statusMessage.equals("The file " + fileName + ".json already exists")){
                 overwriteFileCheckBox = new JCheckBox("Overwrite " + fileName + ".json");
                 Object[] msgContent = {statusMessage, overwriteFileCheckBox};
-                JOptionPane.showConfirmDialog(this,  msgContent,  null, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, message);
+                JOptionPane.showConfirmDialog(this,  msgContent,  null, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, messageIcon);
 
                 if (overwriteFileCheckBox.isSelected()){
                     File myObj = new File(folderLocation + "/" + fileName + ".json");
                     if (myObj.delete()) {
-                        JOptionPane.showMessageDialog(this, currentData.saveToJSONFile(folderLocation, fileName), null, JOptionPane.INFORMATION_MESSAGE, message);
+                        JOptionPane.showMessageDialog(this, currentData.saveToJSONFile(folderLocation, fileName), null, JOptionPane.INFORMATION_MESSAGE, messageIcon);
                     }else {
-                        JOptionPane.showMessageDialog(this, "Unable to delete the file", null, JOptionPane.INFORMATION_MESSAGE, message);
+                        JOptionPane.showMessageDialog(this, "Unable to delete the file", null, JOptionPane.INFORMATION_MESSAGE, messageIcon);
                     }
                 }
 
             }else {
                 // Display the status message
-                JOptionPane.showMessageDialog(this, statusMessage, null, JOptionPane.INFORMATION_MESSAGE, message);
+                JOptionPane.showMessageDialog(this, statusMessage, null, JOptionPane.INFORMATION_MESSAGE, messageIcon);
             }
         }
     }
@@ -586,6 +595,15 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             textStyle = 1;
             dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
             currentData.changeFrequencyTableVisualSettings(1, Color.LIGHT_GRAY, textStyle, textSizeSlider.getValue());
+        }
+
+        if (e.getSource() == gitHubLink){
+            String url = "https://github.com/ignRyann/General-Dashboard-Manager";
+            try {
+                Desktop.getDesktop().browse(java.net.URI.create(url));
+            } catch (IOException ioException) {
+                JOptionPane.showMessageDialog(this, "Check out https://github.com/ignRyann/General-Dashboard-Manager", "Help Page", JOptionPane.INFORMATION_MESSAGE, messageIcon);
+            }
         }
 
     }
