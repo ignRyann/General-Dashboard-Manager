@@ -105,7 +105,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         fileMenu = new JMenu("File");
         visualMenu = new JMenu("Visual Settings");
         tableHeadColourSubMenu = new JMenu("Change Table Head Colour");
-        textSizeSubMenu = new JMenu("Change Font Size");
+        textSizeSubMenu = new JMenu("Change Text Size");
         textStyleSubMenu = new JMenu("Change Text Style");
         helpMenu = new JMenu("Help");
 
@@ -173,7 +173,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
         // Shortcuts added for easier usability
         fileMenu.setMnemonic(KeyEvent.VK_F); // Keyboard shortcut : [Alt + f] or [Ctrl + Option + f] for File
-        visualMenu.setMnemonic(KeyEvent.VK_D); // Keyboard shortcut : [Alt + d] or [Ctrl + Option + d] for Checklist
+        visualMenu.setMnemonic(KeyEvent.VK_V); // Keyboard shortcut : [Alt + d] or [Ctrl + Option + d] for Visual Settings
+        helpMenu.setMnemonic(KeyEvent.VK_H); // Keyboard shortcut : [Alt + h] or [Ctrl + Option + h for Help
         clearDataFrameItem.setMnemonic(KeyEvent.VK_C); // Keyboard shortcut : [c] for Clear
         loadDataFrameItem.setMnemonic(KeyEvent.VK_L); // Keyboard shortcut : [l] for Load
         saveDataFrameItem.setMnemonic(KeyEvent.VK_S); // Keyboard shortcut : [s] for Save
@@ -359,7 +360,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                     updateDataSelectionPanel();
                     updateSearchBarPanel(true);
                 }else {
-                    JOptionPane.showMessageDialog(this,"The selected file is not supported. Please choose a .csv file", null, JOptionPane.INFORMATION_MESSAGE, message);
+                    JOptionPane.showMessageDialog(this,"The selected file is not supported.", null, JOptionPane.INFORMATION_MESSAGE, message);
                 }
             }catch (StringIndexOutOfBoundsException e){
                 JOptionPane.showMessageDialog(this, "The selected file does not exit. Please choose a valid file", null, JOptionPane.INFORMATION_MESSAGE, message);
