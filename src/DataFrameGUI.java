@@ -470,6 +470,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             searchBarPanel.add(searchBarMatchesLabel, BorderLayout.EAST);
 
         }
+        searchBarPanel.repaint();
     }
 
     // Updates the menu bar everytime the data is changed
