@@ -25,7 +25,6 @@ public class DataFrame{
     // Returns the number of rows in the DataFrame
     public int getRowCount(){
         int rowCount = 0;
-
         for (Column col : Columns) {
             if (rowCount < col.getSize()) {
                 rowCount = col.getSize();
@@ -38,7 +37,6 @@ public class DataFrame{
     // Gets the value within a row in a column
     public String getValue(String columnName, int row){
         String rowValue = "-1";
-
         for (Column col : Columns) {
             if (col.getName().equals(columnName)){
                 rowValue = col.getRowValue(row);
@@ -51,7 +49,6 @@ public class DataFrame{
 
     // Sets the value at a given row and column with a value specified
     public void putValue(String columnName, int row, String value){
-
         for (Column col : Columns){
             if (col.getName().equals(columnName)){
                 col.setRowValue(row, value);
@@ -62,13 +59,11 @@ public class DataFrame{
 
     // Adds a new value to the end of the column with a value specified
     public void addValue(String columnName, String value){
-
         for (Column col : Columns){
             if (col.getName().equals(columnName)){
                 col.addRowValue(value);
             }
         }
-
     }
 
     // Gets the values within the column

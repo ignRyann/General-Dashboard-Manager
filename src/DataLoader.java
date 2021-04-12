@@ -59,12 +59,15 @@ public class DataLoader{
             while (((row = csvReader.readLine()) != null)){
                 if ( !((row.equals("{")) || (row.equals("}"))) ){
                     // Makes it such that the row contains only the data itself separated by commas
-                    row = row.replaceAll("\",", "").replaceAll(" :", ",").replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", "").replaceAll("\t", "");
-                    // So that we can register null values when creating the frequency data graphs
-                    row = row.replaceAll(", ,", ",  ,");
-                    row = row.replaceAll(", ,", ",  ,");
-
+                    row = row.replaceAll("\",", "").replaceAll(" :", ",").replaceAll("\\[", "").replaceAll("]", "").replaceAll("\"", "").replaceAll("\t", "").replaceAll(", ", ",  ");
                     String[] columnData = row.split(", ");
+
+                    for (int i = 0; i < columnData.length; i++){
+                        // In the case of empty values
+                        if (!columnData[i].isBlank()){
+                            columnData[i] = columnData[i].trim();
+                        }
+                    }
                     jsonData.add(new ArrayList<>(Arrays.asList(columnData)));
                 }
             }

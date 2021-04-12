@@ -72,6 +72,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private String fileName;
     private String statusMessage;
     private JCheckBox overwriteFileCheckBox;
+    private final ImageIcon message = new ImageIcon("img/message.png");
 
     // Main body for the DataFrameGUI
     public DataFrameGUI(){
@@ -81,6 +82,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         setMinimumSize(new Dimension(1000, 400 ));
         setLocationRelativeTo(null);
         setVisible(true);
+        JOptionPane.showMessageDialog(this, "Go to 'File' and then 'Load' to open a file!", null, JOptionPane.INFORMATION_MESSAGE, message);
     }
 
     // Creates the individual components and adds them together
@@ -250,6 +252,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private void createSearchBarPanel(){
         searchBarPanel = new JPanel(new FlowLayout());
         searchBarPanel.setBorder(BorderFactory.createEtchedBorder());
+        searchBarPanel.setPreferredSize(new Dimension(1600, 40));
 
         // Creates the searchColumnComboBox
         searchColumnComboBoxModel = new DefaultComboBoxModel<>(new String[]{"All"});
@@ -306,11 +309,6 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                 }
             }
         });
-
-        // Adds the components onto the searchBarPanel
-        searchBarPanel.add(searchColumnComboBox, BorderLayout.CENTER);
-        searchBarPanel.add(searchBarTextField, BorderLayout.CENTER);
-        searchBarPanel.add(searchBarMatchesLabel, BorderLayout.EAST);
     }
 
     // Creates the backPanel and adds each of the components to it
@@ -358,10 +356,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
                     updateDataSelectionPanel();
                     updateSearchBarPanel(true);
                 }else {
-                    JOptionPane.showMessageDialog(this, "The selected file is not supported. Please choose a .csv file");
+                    JOptionPane.showMessageDialog(this,"The selected file is not supported. Please choose a .csv file", null, JOptionPane.INFORMATION_MESSAGE, message);
                 }
             }catch (StringIndexOutOfBoundsException e){
-                JOptionPane.showMessageDialog(this, "The selected file does not exit. Please choose a valid file");
+                JOptionPane.showMessageDialog(this, "The selected file does not exit. Please choose a valid file", null, JOptionPane.INFORMATION_MESSAGE, message);
             }
         }
     }
@@ -370,7 +368,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
     private void getFileName(){
         fileNameTextField = new JTextField();
         Object[] msgContent = {"Please enter the name of the file you wish to save the file as: ", fileNameTextField};
-        JOptionPane.showConfirmDialog(this,  msgContent,  "Save File", JOptionPane.YES_NO_OPTION);
+        JOptionPane.showConfirmDialog(this,  msgContent,  "Save File", JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, message);
 
         fileName = fileNameTextField.getText();
     }
@@ -395,20 +393,20 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             if (statusMessage.equals("The file " + fileName + ".json already exists")){
                 overwriteFileCheckBox = new JCheckBox("Overwrite " + fileName + ".json");
                 Object[] msgContent = {statusMessage, overwriteFileCheckBox};
-                JOptionPane.showConfirmDialog(this,  msgContent,  null, JOptionPane.YES_NO_OPTION);
+                JOptionPane.showConfirmDialog(this,  msgContent,  null, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, message);
 
                 if (overwriteFileCheckBox.isSelected()){
                     File myObj = new File(folderLocation + "/" + fileName + ".json");
                     if (myObj.delete()) {
-                        JOptionPane.showMessageDialog(this, currentData.saveToJSONFile(folderLocation, fileName), null, JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, currentData.saveToJSONFile(folderLocation, fileName), null, JOptionPane.INFORMATION_MESSAGE, message);
                     }else {
-                        JOptionPane.showMessageDialog(this, "Unable to delete the file", null, JOptionPane.INFORMATION_MESSAGE);
+                        JOptionPane.showMessageDialog(this, "Unable to delete the file", null, JOptionPane.INFORMATION_MESSAGE, message);
                     }
                 }
 
             }else {
                 // Display the status message
-                JOptionPane.showMessageDialog(this, statusMessage, null, JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, statusMessage, null, JOptionPane.INFORMATION_MESSAGE, message);
             }
         }
     }
@@ -454,6 +452,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
 
     // Updates the searchBarPanel
     private void updateSearchBarPanel(Boolean dataLoadedIn){
+        searchBarPanel.removeAll();
+
         searchColumnComboBoxModel.removeAllElements();
         searchColumnComboBoxModel.addElement("All");
         searchBarTextField.setText("");
@@ -463,6 +463,12 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             for (String column : currentData.getShownColumnNames()) {
                 searchColumnComboBoxModel.addElement(column);
             }
+
+            // Adds the components onto the searchBarPanel
+            searchBarPanel.add(searchColumnComboBox, BorderLayout.CENTER);
+            searchBarPanel.add(searchBarTextField, BorderLayout.CENTER);
+            searchBarPanel.add(searchBarMatchesLabel, BorderLayout.EAST);
+
         }
     }
 
