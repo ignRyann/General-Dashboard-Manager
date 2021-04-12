@@ -54,7 +54,6 @@ public class DataFrame{
                 col.setRowValue(row, value);
             }
         }
-
     }
 
     // Adds a new value to the end of the column with a value specified

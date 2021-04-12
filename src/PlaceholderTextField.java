@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
+// Extension of JTextField - Allows for a placeholder to be set
 public class PlaceholderTextField extends JTextField {
     private final String placeholder;
 

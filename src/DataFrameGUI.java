@@ -277,6 +277,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         searchBarTextField = new PlaceholderTextField(" Search Bar");
         searchBarTextField.setPreferredSize(new Dimension(500, 30));
 
+        // Creates the searchBarMatchesLabel
         searchBarMatchesLabel = new JLabel("0 matches found.");
 
         // Filters the table depending on the text from searchBarTextField
@@ -597,6 +598,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             currentData.changeFrequencyTableVisualSettings(1, Color.LIGHT_GRAY, textStyle, textSizeSlider.getValue());
         }
 
+        // If the user wishes to read up on the code on GitHub
         if (e.getSource() == gitHubLink){
             String url = "https://github.com/ignRyann/General-Dashboard-Manager";
             try {

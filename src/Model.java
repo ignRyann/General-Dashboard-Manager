@@ -157,11 +157,14 @@ public class Model {
         return frequencyDataChart;
     }
 
+    // Changes the visual settings on all the frequency tables
     public void changeFrequencyTableVisualSettings(int visualSetting, Color colour, int textStyle, int textSize){
         for (JTable frequencyTable : allFrequencyTables){
+            // VisualSetting 0 is for changing table header column colour
             if (visualSetting == 0) {
                 frequencyTable.getTableHeader().setBackground(colour);
             }
+            // VisualSetting 1 is for changing the style of the text
             else if (visualSetting == 1){
                 frequencyTable.setFont(new Font("Dialog", textStyle, textSize));
             }

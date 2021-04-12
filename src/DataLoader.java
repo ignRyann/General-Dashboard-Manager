@@ -65,8 +65,10 @@ public class DataLoader{
                     for (int i = 0; i < columnData.length; i++){
                         // In the case of empty values
                         if (!columnData[i].isBlank()){
+                            // Removes any trailing spaces
                             columnData[i] = columnData[i].trim();
                         }else{
+                            // If data is just spaces, it is null
                             columnData[i] = "";
                         }
                     }
