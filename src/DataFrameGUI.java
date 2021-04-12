@@ -121,7 +121,10 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         textSizeSlider.setPaintLabels(true);
         textSizeSlider.setOrientation(SwingConstants.VERTICAL);
         textStyle = 0;
-        textSizeSlider.addChangeListener(e -> dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue())));
+        textSizeSlider.addChangeListener(e -> {
+            dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
+            currentData.changeFrequencyTableVisualSettings(1, Color.LIGHT_GRAY, textStyle, textSizeSlider.getValue());
+        });
 
         // Creates the Submenu items for 'Change Table Head Colour'
         yellowTableHeaderColourItem = new JMenuItem("Yellow");
@@ -540,38 +543,48 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         // If the user wishes to change the colour of the table headers
         if (e.getSource() == yellowTableHeaderColourItem){
             dataFrameTable.getTableHeader().setBackground(Color.YELLOW);
+            currentData.changeFrequencyTableVisualSettings(0, Color.YELLOW, 0, 0);
         }
         else if (e.getSource() == orangeTableHeaderColourItem){
             dataFrameTable.getTableHeader().setBackground(Color.ORANGE);
+            currentData.changeFrequencyTableVisualSettings(0, Color.ORANGE, 0, 0);
         }
         else if (e.getSource() == greenTableHeaderColourItem) {
             dataFrameTable.getTableHeader().setBackground(Color.GREEN);
+            currentData.changeFrequencyTableVisualSettings(0, Color.GREEN, 0, 0);
         }
         else if (e.getSource() == cyanTableHeaderColourItem) {
             dataFrameTable.getTableHeader().setBackground(Color.CYAN);
+            currentData.changeFrequencyTableVisualSettings(0, Color.CYAN, 0, 0);
         }
         else if (e.getSource() == magentaTableHeaderColourItem) {
             dataFrameTable.getTableHeader().setBackground(Color.MAGENTA);
+            currentData.changeFrequencyTableVisualSettings(0, Color.MAGENTA, 0, 0);
         }
         else if (e.getSource() == redTableHeaderColourItem) {
             dataFrameTable.getTableHeader().setBackground(Color.RED);
+            currentData.changeFrequencyTableVisualSettings(0, Color.RED, 0, 0);
         }
         else if (e.getSource() == lightGrayTableHeaderColourItem) {
             dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
+            currentData.changeFrequencyTableVisualSettings(0, Color.LIGHT_GRAY, 0, 0);
         }
 
         // If the user wishes to change the style of writing
         if (e.getSource() == plainTextItem){
             textStyle = 0;
             dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
+            currentData.changeFrequencyTableVisualSettings(1, Color.LIGHT_GRAY, textStyle, textSizeSlider.getValue());
         }
         else if (e.getSource() == italicTextItem){
             textStyle = 2;
             dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
+            currentData.changeFrequencyTableVisualSettings(1, Color.LIGHT_GRAY, textStyle, textSizeSlider.getValue());
         }
         else if (e.getSource() == boldTextItem){
             textStyle = 1;
             dataFrameTable.setFont(new Font("Dialog", textStyle, textSizeSlider.getValue()));
+            currentData.changeFrequencyTableVisualSettings(1, Color.LIGHT_GRAY, textStyle, textSizeSlider.getValue());
         }
 
     }

@@ -12,11 +12,14 @@ public class Model {
     private DataFrame currentDataFrame = new DataFrame();
     // An ArrayList of column headers that should be shown
     private ArrayList<Boolean> shownColumnHeaders;
+    // An ArrayList of all the frequency tables
+    private ArrayList<JTable> allFrequencyTables;
 
     // Empties the data
     public void emptyDataFrame(){
         currentDataFrame = new DataFrame();
         shownColumnHeaders = new ArrayList<>();
+        allFrequencyTables = new ArrayList<>();
     }
 
     // Loads data into the model
@@ -26,6 +29,7 @@ public class Model {
         for (String ignored : currentDataFrame.getColumnNames()){
             shownColumnHeaders.add(true);
         }
+        allFrequencyTables = new ArrayList<>();
     }
 
     // Returns a String[] of all the column names
@@ -139,7 +143,7 @@ public class Model {
         });
 
         frequencyTable.setModel(frequencyTableModel);
-
+        allFrequencyTables.add(frequencyTable);
         // Changing frequencyTable settings for better readability of the data
         frequencyTable.getColumnModel().setColumnMargin(20);
         frequencyTable.getTableHeader().setResizingAllowed(false);
@@ -152,6 +156,17 @@ public class Model {
         frequencyDataChart.add(new JScrollPane(frequencyTable));
 
         return frequencyDataChart;
+    }
+
+    public void changeFrequencyTableVisualSettings(int visualSetting, Color colour, int textStyle, int textSize){
+        for (JTable frequencyTable : allFrequencyTables){
+            if (visualSetting == 0) {
+                frequencyTable.getTableHeader().setBackground(colour);
+            }
+            else if (visualSetting == 1){
+                frequencyTable.setFont(new Font("Dialog", textStyle, textSize));
+            }
+        }
     }
 
 }
