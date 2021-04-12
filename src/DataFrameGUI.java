@@ -116,6 +116,15 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         loadDataFrameItem = new JMenuItem("Load");
         saveDataFrameItem = new JMenuItem("Save");
 
+        // Creates the Submenu items for 'Change Table Head Colour'
+        yellowTableHeaderColourItem = new JMenuItem("Yellow");
+        orangeTableHeaderColourItem = new JMenuItem("Orange");
+        greenTableHeaderColourItem = new JMenuItem("Green");
+        cyanTableHeaderColourItem = new JMenuItem("Cyan");
+        magentaTableHeaderColourItem = new JMenuItem("Magenta");
+        redTableHeaderColourItem = new JMenuItem("Red");
+        lightGrayTableHeaderColourItem = new JMenuItem("Light Gray");
+
         // Creates the Slider for 'Change Font Size'
         textSizeSlider = new JSlider(8, 16, 12);
         textSizeSlider.setPaintTicks(true);
@@ -128,18 +137,8 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             currentData.changeFrequencyTableVisualSettings(1, Color.LIGHT_GRAY, textStyle, textSizeSlider.getValue());
         });
 
-        // Creates the Submenu items for 'Change Table Head Colour'
-        yellowTableHeaderColourItem = new JMenuItem("Yellow");
-        orangeTableHeaderColourItem = new JMenuItem("Orange");
-        greenTableHeaderColourItem = new JMenuItem("Green");
-        cyanTableHeaderColourItem = new JMenuItem("Cyan");
-        magentaTableHeaderColourItem = new JMenuItem("Magenta");
-        redTableHeaderColourItem = new JMenuItem("Red");
-        lightGrayTableHeaderColourItem = new JMenuItem("Light Gray");
-
         // Creates the Submenu items for 'Change Text Style'
-        textStyleRadioButtonGroup = new ButtonGroup();
-        textStyleRadioButtonGroup.add(plainTextItem = new JRadioButtonMenuItem("Plain"));
+        textStyleRadioButtonGroup = new ButtonGroup();textStyleRadioButtonGroup.add(plainTextItem = new JRadioButtonMenuItem("Plain"));
         textStyleRadioButtonGroup.add(italicTextItem = new JRadioButtonMenuItem("Italic"));
         textStyleRadioButtonGroup.add(boldTextItem = new JRadioButtonMenuItem("Bold"));
         plainTextItem.setSelected(true);
@@ -255,6 +254,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
         dataFrameTable.setCellSelectionEnabled(true);
         dataFrameTable.getColumnModel().setColumnMargin(20);
         dataFrameTable.getTableHeader().setBackground(Color.LIGHT_GRAY);
+        dataFrameTable.setGridColor(Color.white);
 
         // Adds it onto a scrollable component and then adds it to the Tabbed Pane to be shown
         scrollableDataFrameTable = new JScrollPane(dataFrameTable);
