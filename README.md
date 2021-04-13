@@ -45,7 +45,7 @@ Add the ability to display graphs or charts to show the data, for example distri
 ## Dashboard Manager Breakdown
 
 ### Keyboard Shorcuts
-The following Keyboard Shortcuts were implemented for better and faster functionality of the program. The Keyboard shortcuts do differ depending on the Operating System you are using. The Keyboard Shorcuts will be listed out for Mac OS however if you are using Windows OS, use [Alt] instead of [Ctrl + Option]. THe Keyboard Shortcuts are as follows:
+The following Keyboard Shortcuts were implemented for better and faster functionality of the program. The Keyboard shortcuts do differ depending on the Operating System you are using. The Keyboard Shorcuts will be listed out for Mac OS however if you are using Windows OS, use [Alt] instead of [Ctrl + Option]. The Keyboard Shortcuts are as follows:
 - [Ctrl + Option + f] for 'File' Menu
 - [Ctrl + Option + v] for 'Visual Settings' Menu
 - [Ctrl + Option + h] for 'Help' Menu
