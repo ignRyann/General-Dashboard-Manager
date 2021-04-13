@@ -64,12 +64,13 @@ The menu item will allow the user to select a file they wish to load its content
 ##### Save Menu Item
 The menu item will save the the data contents of the DataFrame to a valid .json file if the DataFrame is not empty. The user is able to choose a file name and the folder location they wish to save it in. The file name must only consist of letters and numbers.
 
+#### Visual Settings Menu Item
 When data has been loaded in to the General Dashboard Manager, the menu bar will also display the 'Visual Settings' menu. This has been added so that the user can change the way the data is displayed to their own preference. The user is given 3 visual features they can change within the program:
-##### - Change Table Head Colour
+###### - Change Table Head Colour
 The user can change the Table Header Colour of each JTable to any of the following options: Yellow, Orange, Green, Cyan, Magenta, Red and Light Gray. The default option is Light Gray.
-##### - Change Text Size
+###### - Change Text Size
 The user can change the size of the text anywhere between the sizes of 8 and 16 inclusive. The default option is size 12.
-##### - Change Text Style
+###### - Change Text Style
 The user can change the style of the text; plain, italic, bold. The default option is plain.
 
 ### The Main Tab
