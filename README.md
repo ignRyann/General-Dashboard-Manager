@@ -1,4 +1,8 @@
 # General-Dashboard-Manager
+
+##### [1. Description](#description)
+##### [2. General Dashboard Manager Breakdown](#dashboard-manager-breakdown)
+
 ## Description
 The General Dashboard Manager is a program, written in Java, that completes Requirements 1 - 9 set for UCL COMP0004 : Object-Oriented Programming Coursework 2. The Requirements were set out as the following:
 
@@ -45,7 +49,7 @@ Add the ability to display graphs or charts to show the data, for example distri
 ## Dashboard Manager Breakdown
 
 ### Keyboard Shorcuts
-The following Keyboard Shortcuts were implemented for better and faster functionality of the program. The Keyboard shortcuts do differ depending on the Operating System you are using. The Keyboard Shorcuts will be listed out for Mac OS however if you are using Windows OS, use [Alt] instead of [Ctrl + Option]. THe Keyboard Shortcuts are as follows:
+The following Keyboard Shortcuts were implemented for better and faster functionality of the program. The Keyboard shortcuts do differ depending on the Operating System you are using. The Keyboard Shorcuts will be listed out for Mac OS however if you are using Windows OS, use [Alt] instead of [Ctrl + Option]. The Keyboard Shortcuts are as follows:
 - [Ctrl + Option + f] for 'File' Menu
 - [Ctrl + Option + v] for 'Visual Settings' Menu
 - [Ctrl + Option + h] for 'Help' Menu
@@ -64,12 +68,13 @@ The menu item will allow the user to select a file they wish to load its content
 ##### Save Menu Item
 The menu item will save the the data contents of the DataFrame to a valid .json file if the DataFrame is not empty. The user is able to choose a file name and the folder location they wish to save it in. The file name must only consist of letters and numbers.
 
+#### Visual Settings Menu Item
 When data has been loaded in to the General Dashboard Manager, the menu bar will also display the 'Visual Settings' menu. This has been added so that the user can change the way the data is displayed to their own preference. The user is given 3 visual features they can change within the program:
-##### - Change Table Head Colour
+###### - Change Table Head Colour
 The user can change the Table Header Colour of each JTable to any of the following options: Yellow, Orange, Green, Cyan, Magenta, Red and Light Gray. The default option is Light Gray.
-##### - Change Text Size
+###### - Change Text Size
 The user can change the size of the text anywhere between the sizes of 8 and 16 inclusive. The default option is size 12.
-##### - Change Text Style
+###### - Change Text Style
 The user can change the style of the text; plain, italic, bold. The default option is plain.
 
 ### The Main Tab
