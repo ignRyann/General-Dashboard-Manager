@@ -1,6 +1,6 @@
 # General-Dashboard-Manager
 
-##### 1. Description(#Description)
+##### [1. Description](#description)
 ##### 2. General Dashboard Manager Breakdown
 
 ## Description
