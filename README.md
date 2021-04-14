@@ -1,4 +1,8 @@
 # General-Dashboard-Manager
+
+##### 1. Description
+##### 2. General Dashboard Manager Breakdown
+
 ## Description
 The General Dashboard Manager is a program, written in Java, that completes Requirements 1 - 9 set for UCL COMP0004 : Object-Oriented Programming Coursework 2. The Requirements were set out as the following:
 
