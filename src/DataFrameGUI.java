@@ -407,7 +407,7 @@ public class DataFrameGUI extends JFrame implements ActionListener{
             if (statusMessage.equals("The file " + fileName + ".json already exists")){
                 overwriteFileCheckBox = new JCheckBox("Overwrite " + fileName + ".json");
                 Object[] msgContent = {statusMessage, overwriteFileCheckBox};
-                JOptionPane.showConfirmDialog(this,  msgContent,  null, JOptionPane.YES_NO_OPTION, JOptionPane.INFORMATION_MESSAGE, messageIcon);
+                JOptionPane.showMessageDialog(this,  msgContent,  null, JOptionPane.INFORMATION_MESSAGE, messageIcon);
 
                 if (overwriteFileCheckBox.isSelected()){
                     File myObj = new File(folderLocation + "/" + fileName + ".json");
